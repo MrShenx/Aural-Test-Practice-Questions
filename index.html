@@ -1,0 +1,2732 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EEEBE1;
+    --surface: #FBFAF5;
+    --surface-2: #F3F0E6;
+    --ink: #26241F;
+    --ink-soft: #5B5749;
+    --ink-faint: #8B856F;
+    --line: #D9D3C1;
+    --line-strong: #C4BCA4;
+
+    --brass: #93611F;
+    --brass-ink: #6E480F;
+    --brass-tint: #F1E3CC;
+    --brass-glow: #C98A34;
+
+    --teal: #1F5957;
+    --teal-ink: #14403E;
+    --teal-tint: #DCEBE9;
+    --teal-glow: #3B8B87;
+
+    --good: #4C7A3D;
+    --good-tint: #E4EEDD;
+
+    --plum: #6E4589;
+    --plum-ink: #4F2F66;
+    --plum-tint: #E9E0EF;
+    --plum-glow: #8B5EA8;
+
+    --slate: #3B5B73;
+    --slate-ink: #294254;
+    --slate-tint: #DEE6EB;
+    --slate-glow: #5A7F99;
+
+    --rose: #A14B4E;
+    --rose-ink: #7A3336;
+    --rose-tint: #F1DEDF;
+    --rose-glow: #C06D70;
+
+    --shadow: 0 1px 2px rgba(38,36,31,0.06), 0 8px 24px -12px rgba(38,36,31,0.18);
+    --radius: 10px;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #1A1815;
+      --surface: #232019;
+      --surface-2: #2B2720;
+      --ink: #EDE8DA;
+      --ink-soft: #B7AF9B;
+      --ink-faint: #8B826D;
+      --line: #3B362C;
+      --line-strong: #4C4636;
+
+      --brass: #D8A85E;
+      --brass-ink: #EFCB92;
+      --brass-tint: #3A2E18;
+      --brass-glow: #E3B368;
+
+      --teal: #6BB4AF;
+      --teal-ink: #9AD1CC;
+      --teal-tint: #1C332F;
+      --teal-glow: #6BB4AF;
+
+      --good: #8FBB78;
+      --good-tint: #263420;
+
+      --plum: #B698CC;
+      --plum-ink: #D9C4E8;
+      --plum-tint: #332740;
+      --plum-glow: #B698CC;
+
+      --slate: #8FB3CC;
+      --slate-ink: #C2DCEE;
+      --slate-tint: #1E2E38;
+      --slate-glow: #8FB3CC;
+
+      --rose: #D69A9C;
+      --rose-ink: #E8C2C3;
+      --rose-tint: #3A2223;
+      --rose-glow: #D69A9C;
+
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #1A1815;
+    --surface: #232019;
+    --surface-2: #2B2720;
+    --ink: #EDE8DA;
+    --ink-soft: #B7AF9B;
+    --ink-faint: #8B826D;
+    --line: #3B362C;
+    --line-strong: #4C4636;
+
+    --brass: #D8A85E;
+    --brass-ink: #EFCB92;
+    --brass-tint: #3A2E18;
+    --brass-glow: #E3B368;
+
+    --teal: #6BB4AF;
+    --teal-ink: #9AD1CC;
+    --teal-tint: #1C332F;
+    --teal-glow: #6BB4AF;
+
+    --good: #8FBB78;
+    --good-tint: #263420;
+
+    --plum: #B698CC;
+    --plum-ink: #D9C4E8;
+    --plum-tint: #332740;
+    --plum-glow: #B698CC;
+
+    --slate: #8FB3CC;
+    --slate-ink: #C2DCEE;
+    --slate-tint: #1E2E38;
+    --slate-glow: #8FB3CC;
+
+    --rose: #D69A9C;
+    --rose-ink: #E8C2C3;
+    --rose-tint: #3A2223;
+    --rose-glow: #D69A9C;
+
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  *{ box-sizing: border-box; }
+  html, body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Karla", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: var(--brass-glow); color: #1A1815; }
+
+  .wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  h1, h2, h3{
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  header.top{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding-right: 46px; /* reserve room for the theme toggle so text never wraps under it */
+  }
+  .theme-toggle{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .theme-toggle:hover{
+    background: var(--surface-2);
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+  .theme-toggle .theme-icon{ display: none; }
+  .theme-toggle .icon-sun{ display: block; }
+  .theme-toggle.is-dark .icon-sun{ display: none; }
+  .theme-toggle.is-dark .icon-moon{ display: block; }
+  .eyebrow{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  header.top h1{
+    font-size: clamp(28px, 4vw, 38px);
+    font-optical-sizing: auto;
+  }
+  header.top p{
+    color: var(--ink-soft);
+    max-width: 62ch;
+    font-size: 15.5px;
+    margin: 0;
+  }
+
+  .strategy-band{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 28px 0 34px;
+  }
+  @media (max-width: 720px){ .strategy-band{ grid-template-columns: 1fr; } }
+  .strategy-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .strategy-card .tag{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brass);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .strategy-card:nth-child(2) .tag{ color: var(--teal); }
+  .strategy-card h3{ font-size: 16px; margin-bottom: 4px; }
+  .strategy-card p{ margin: 0; color: var(--ink-soft); font-size: 13.8px; }
+
+  /* Grade selector */
+  .grade-band{
+    margin: 22px 0 26px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+  .grade-band .group-label{
+    display:block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 9px;
+  }
+  .grade-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .grade-btn{
+    font-family: "Karla", sans-serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .grade-btn:hover{ background: var(--line); }
+  .grade-btn.active{ background: var(--brass); border-color: var(--brass); color: #FBF6EC; }
+  .grade-note{
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* Tabs */
+  .tabs{
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--line-strong);
+    margin-bottom: 22px;
+  }
+  .tab-btn{
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 16px;
+    background: none;
+    border: none;
+    color: var(--ink-faint);
+    padding: 10px 4px 12px;
+    margin-right: 22px;
+    cursor: pointer;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease;
+  }
+  .tab-btn:hover{ color: var(--ink); }
+  .tab-btn.active{ color: var(--ink); border-bottom-color: var(--accent, var(--brass)); }
+  .tab-btn[data-tab="time"].active{ --accent: var(--slate); }
+  .tab-btn[data-tab="rhythm"].active{ --accent: var(--brass); }
+  .tab-btn[data-tab="melody"].active{ --accent: var(--teal); }
+  .tab-btn[data-tab="pitch"].active{ --accent: var(--plum); }
+  .tab-btn[data-tab="triad"].active{ --accent: var(--rose); }
+  .tab-btn[data-tab="cadence"].active{ --accent: var(--teal); }
+  .tab-btn[data-tab="memory"].active{ --accent: var(--slate); }
+  .tab-btn.hidden-grade{ display: none; }
+  .tab-btn .dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    margin-right:8px; background: var(--ink-faint); vertical-align:middle;
+  }
+  .tab-btn[data-tab="time"] .dot{ background: var(--slate); }
+  .tab-btn[data-tab="rhythm"] .dot{ background: var(--brass); }
+  .tab-btn[data-tab="melody"] .dot{ background: var(--teal); }
+  .tab-btn[data-tab="pitch"] .dot{ background: var(--plum); }
+  .tab-btn[data-tab="triad"] .dot{ background: var(--rose); }
+  .tab-btn[data-tab="cadence"] .dot{ background: var(--teal); }
+  .tab-btn[data-tab="memory"] .dot{ background: var(--slate); }
+
+  .panel{ display: none; }
+  .panel.active{ display: block; }
+
+  .board{
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 760px){ .board{ grid-template-columns: 1fr; } }
+
+  .controls{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: fit-content;
+  }
+  .ctrl-group label.group-label{
+    display:block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .segmented{
+    display: flex;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .segmented button{
+    flex: 1;
+    background: var(--surface-2);
+    border: none;
+    border-right: 1px solid var(--line-strong);
+    color: var(--ink-soft);
+    font-family: "Karla", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 4px;
+    cursor: pointer;
+  }
+  .segmented-wrap{ flex-wrap: wrap; }
+  .segmented-wrap button{ flex: 1 1 33%; min-width: 44px; }
+  .segmented button:last-child{ border-right: none; }
+  .segmented button.active{
+    background: var(--accent-tint, var(--brass-tint));
+    color: var(--accent-ink, var(--brass-ink));
+  }
+  #time-panel .segmented button.active{ --accent-tint: var(--slate-tint); --accent-ink: var(--slate-ink); }
+  #rhythm-panel .segmented button.active{ --accent-tint: var(--brass-tint); --accent-ink: var(--brass-ink); }
+  #melody-panel .segmented button.active{ --accent-tint: var(--teal-tint); --accent-ink: var(--teal-ink); }
+  #pitch-panel .segmented button.active{ --accent-tint: var(--plum-tint); --accent-ink: var(--plum-ink); }
+  #triad-panel .segmented button.active{ --accent-tint: var(--rose-tint); --accent-ink: var(--rose-ink); }
+  #cadence-panel .segmented button.active{ --accent-tint: var(--teal-tint); --accent-ink: var(--teal-ink); }
+  #memory-panel .segmented button.active{ --accent-tint: var(--slate-tint); --accent-ink: var(--slate-ink); }
+
+  .tempo-row{ display:flex; align-items:center; gap:10px; }
+  input[type="range"]{ flex:1; accent-color: var(--brass); }
+  #time-panel input[type="range"]{ accent-color: var(--slate); }
+  #melody-panel input[type="range"]{ accent-color: var(--teal); }
+  #pitch-panel input[type="range"]{ accent-color: var(--plum); }
+  #triad-panel input[type="range"]{ accent-color: var(--rose); }
+  #cadence-panel input[type="range"]{ accent-color: var(--teal); }
+  #memory-panel input[type="range"]{ accent-color: var(--slate); }
+  .tempo-val{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    min-width: 58px;
+    text-align: right;
+  }
+
+  .btn{
+    font-family: "Karla", sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 11px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.08s ease, background 0.15s ease;
+  }
+  .btn:hover{ background: var(--line); }
+  .btn:active{ transform: scale(0.98); }
+  .btn:disabled{ opacity: 0.45; cursor: not-allowed; }
+  .btn.primary{ background: var(--brass); color: #FBF6EC; border-color: var(--brass); }
+  .btn.primary:hover{ background: var(--brass-ink); }
+  #time-panel .btn.primary{ background: var(--slate); border-color: var(--slate); }
+  #time-panel .btn.primary:hover{ background: var(--slate-ink); }
+  #melody-panel .btn.primary{ background: var(--teal); border-color: var(--teal); }
+  #melody-panel .btn.primary:hover{ background: var(--teal-ink); }
+  #pitch-panel .btn.primary{ background: var(--plum); border-color: var(--plum); }
+  #pitch-panel .btn.primary:hover{ background: var(--plum-ink); }
+  #triad-panel .btn.primary{ background: var(--rose); border-color: var(--rose); }
+  #triad-panel .btn.primary:hover{ background: var(--rose-ink); }
+  #cadence-panel .btn.primary{ background: var(--teal); border-color: var(--teal); }
+  #cadence-panel .btn.primary:hover{ background: var(--teal-ink); }
+  #memory-panel .btn.primary{ background: var(--slate); border-color: var(--slate); }
+  #memory-panel .btn.primary:hover{ background: var(--slate-ink); }
+  .btn small{ display:block; font-family:"Karla",sans-serif; font-weight:500; font-size:11px; opacity:0.8; margin-top:2px; }
+
+  .btn-row{ display:flex; flex-direction:column; gap:8px; }
+
+  .chain-block{ display:flex; flex-direction:column; gap:9px; }
+  .chain-label{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .chain-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chain-btn{
+    font-family: "Karla", sans-serif;
+    font-weight: 600;
+    font-size: 12.5px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .chain-btn:hover{ background: var(--line); }
+  .chain-btn.played{
+    border-color: var(--good);
+    background: var(--good-tint);
+    color: var(--good);
+  }
+
+  .stage{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .status-line{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    min-height: 16px;
+  }
+
+  .listen-indicator{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .note-dot{
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-strong);
+    background: var(--surface-2);
+    transition: background 0.06s ease, border-color 0.06s ease, transform 0.06s ease;
+  }
+  .note-dot.on{ background: var(--brass); border-color: var(--brass); transform: scale(1.15); }
+  #time-panel .note-dot.on{ background: var(--slate); border-color: var(--slate); }
+  #melody-panel .note-dot.on{ background: var(--teal); border-color: var(--teal); }
+  #pitch-panel .note-dot.on{ background: var(--plum); border-color: var(--plum); }
+  #triad-panel .note-dot.on{ background: var(--rose); border-color: var(--rose); }
+  #cadence-panel .note-dot.on{ background: var(--teal); border-color: var(--teal); }
+  #memory-panel .note-dot.on{ background: var(--slate); border-color: var(--slate); }
+  .progress-track{
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .progress-fill{
+    height: 100%;
+    width: 0%;
+    background: var(--brass);
+  }
+  #time-panel .progress-fill{ background: var(--slate); }
+  #melody-panel .progress-fill{ background: var(--teal); }
+  #pitch-panel .progress-fill{ background: var(--plum); }
+  #triad-panel .progress-fill{ background: var(--rose); }
+  #cadence-panel .progress-fill{ background: var(--teal); }
+  #memory-panel .progress-fill{ background: var(--slate); }
+
+  .placeholder{
+    color: var(--ink-faint);
+    font-size: 14px;
+    border: 1px dashed var(--line-strong);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .reveal{ display:flex; flex-direction:column; gap:14px; }
+  .reveal .meter-tag{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  .bars-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .bar-box{
+    display:flex;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .cell{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap: 3px;
+    padding: 9px 8px 8px;
+    color: var(--brass-ink);
+    background: var(--brass-tint);
+    border-right: 1px solid var(--line-strong);
+    white-space: nowrap;
+    min-width: 44px;
+  }
+  .cell:last-child{ border-right:none; }
+  .cell.rest{ color: var(--ink-faint); background: transparent; }
+  .cell .glyph{ font-size: 20px; line-height: 1; }
+  .cell .name{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.01em;
+    text-align: center;
+  }
+  .cell.rest .glyph{ font-size: 15px; opacity: 0.7; }
+
+  .contour-wrap{ overflow-x: auto; }
+  .contour-wrap svg{ display:block; }
+  .notation-scroll{ overflow-x: auto; padding: 2px 0 6px; }
+  .notation-scroll svg{ display:block; }
+  .note-labels{ display:flex; gap: 4px; margin-top: 6px; }
+  .note-label{
+    flex: 1;
+    min-width: 34px;
+    text-align:center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .note-label.tonic{ color: var(--teal-ink); font-weight: 600; }
+  .note-label.rest{ color: var(--ink-faint); font-style: italic; }
+
+  .log-strip{
+    margin-top: 34px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .log-strip .streak{ color: var(--good); font-weight:600; }
+  .log-strip button{
+    background:none; border:1px solid var(--line-strong); border-radius:6px;
+    padding: 6px 10px; color: var(--ink-faint); font-family:"Karla",sans-serif; font-size:12px; cursor:pointer;
+  }
+
+  .note-mini{
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+  }
+
+  .countdown-big{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 34px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .memorize-score{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--surface-2);
+  }
+  .memorize-score.hidden-score{ filter: blur(7px); opacity: 0.5; user-select: none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .note-dot, .progress-fill, .btn{ transition: none; }
+  }
+</style>
+
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Rhythm & Melody Builder</title></head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+      <svg class="theme-icon icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="theme-icon icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <span class="eyebrow">AMEB Piano Comprehensive, Preliminary–Grade 8 · Aural Home Practice</span>
+    <h1>Rhythm &amp; Melody Builder</h1>
+    <p>A listen-and-echo trainer covering every part of the AMEB aural test, from Preliminary through Grade 8 — pick a grade below and only the tasks that grade actually asks for will show up. Each question is generated in the exam's own style for that grade. Listen the way the examiner plays it, respond out loud, then check the reveal. Rhythm and Melody build working memory from a 2-bar phrase up to a 4–5 bar passage; Pitch, Triad, Cadence, Time and Memory cover the rest of the official test requirements as they're introduced grade by grade.</p>
+  </header>
+
+  <div class="grade-band">
+    <label class="group-label">AMEB Grade</label>
+    <div class="grade-row" id="grade-row">
+      <button data-val="prelim" class="grade-btn">Preliminary</button>
+      <button data-val="1" class="grade-btn">Grade 1</button>
+      <button data-val="2" class="grade-btn">Grade 2</button>
+      <button data-val="3" class="grade-btn active">Grade 3</button>
+      <button data-val="4" class="grade-btn">Grade 4</button>
+      <button data-val="5" class="grade-btn">Grade 5</button>
+      <button data-val="6" class="grade-btn">Grade 6</button>
+      <button data-val="7" class="grade-btn">Grade 7</button>
+      <button data-val="8" class="grade-btn">Grade 8</button>
+    </div>
+    <p class="grade-note" id="grade-note">Grade 3 aural test — Rhythm: tap or clap back a duple- or triple-time passage (two hearings) and state whether it is duple or triple. Melody: hum or sing back a short phrase, played twice, combining melody and time. Pitch: hum or sing the higher or lower of any two notes within an octave from middle C, sounded together; and, after the examiner sounds a keynote, hum or sing then name the interval (2nd, 3rd, 4th or 5th of the major scale) sounded in succession to it.</p>
+  </div>
+
+  <div class="strategy-band">
+    <div class="strategy-card">
+      <span class="tag">Strategy 1 — Chain Build</span>
+      <h3>Grow the passage one bar at a time</h3>
+      <p>Use the <strong>Chain Build</strong> row of buttons: play bars 1–2 twice, then stop and let the student think before choosing 1–3, then 1–4, then the full passage. Nothing auto-advances, so there's no rush and no pile-up — each new bar is added only once the last one is secure.</p>
+    </div>
+    <div class="strategy-card">
+      <span class="tag">Strategy 2 — Spot the Pattern</span>
+      <h3>Name it, don't just repeat it</h3>
+      <p>After playing, hit <strong>Reveal</strong>. Rhythm shows as standard note names (crotchet, quaver, dotted crotchet…) so students recognise repeated cells instead of memorising raw sound; melody shows as solfa and a shape line so they encode "steps up, one leap, home" rather than eight separate notes.</p>
+    </div>
+  </div>
+
+  <nav class="tabs" id="tabs-nav">
+    <button class="tab-btn" data-tab="time"><span class="dot"></span>Time</button>
+    <button class="tab-btn active" data-tab="rhythm"><span class="dot"></span>Rhythm</button>
+    <button class="tab-btn" data-tab="melody"><span class="dot"></span>Melody</button>
+    <button class="tab-btn" data-tab="pitch"><span class="dot"></span>Pitch</button>
+    <button class="tab-btn" data-tab="triad"><span class="dot"></span>Triad</button>
+    <button class="tab-btn" data-tab="cadence"><span class="dot"></span>Cadence</button>
+    <button class="tab-btn" data-tab="memory"><span class="dot"></span>Memory</button>
+  </nav>
+
+  <!-- TIME PANEL (Preliminary) -->
+  <section class="panel" id="time-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group">
+          <label class="group-label">Beats per bar</label>
+          <div class="segmented" id="t-meter">
+            <button data-val="2" class="active">Two</button>
+            <button data-val="3">Three</button>
+          </div>
+        </div>
+        <div class="ctrl-group">
+          <label class="group-label">Speed</label>
+          <div class="segmented" id="t-speed">
+            <button data-val="60">Slow</button>
+            <button data-val="88" class="active">Moderate</button>
+            <button data-val="120">Quick</button>
+          </div>
+        </div>
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="t-new">New Passage</button>
+          <button class="btn" id="t-play">Play &amp; Clap Along<small>Chords play the beat, then go silent — keep clapping</small></button>
+          <button class="btn" id="t-reveal" disabled>Reveal — Did You Stay in Time?<small>Replays the beat straight through, no gap</small></button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="t-status">Choose beats-per-bar and a speed, then press New Passage.</div>
+        <div class="listen-indicator" id="t-pulse">
+          <div class="note-dot"></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div id="t-reveal-area">
+          <div class="placeholder">Preliminary TIME test: clap the beats of a simple chord passage in two- or three-beat time, then keep clapping or beating in tempo after the examiner stops playing. Press Play, clap along, and keep going after the sound cuts out — then press Reveal to check.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RHYTHM PANEL -->
+  <section class="panel active" id="rhythm-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group">
+          <label class="group-label">Length (bars)</label>
+          <div class="segmented" id="r-bars">
+            <button data-val="2" class="active">2</button>
+            <button data-val="3">3</button>
+            <button data-val="4">4</button>
+            <button data-val="5">5</button>
+          </div>
+        </div>
+        <div class="ctrl-group">
+          <label class="group-label">Meter</label>
+          <div class="segmented segmented-wrap" id="r-meter">
+            <button data-val="duple" class="active">2/4</button>
+            <button data-val="triple">3/4</button>
+            <button data-val="common">4/4</button>
+            <button data-val="compound">6/8</button>
+            <button data-val="random">Mix</button>
+          </div>
+        </div>
+        <div class="ctrl-group">
+          <label class="group-label">Tempo</label>
+          <div class="tempo-row">
+            <input type="range" id="r-tempo" min="56" max="112" value="80" step="2">
+            <span class="tempo-val" id="r-tempo-val">80 bpm</span>
+          </div>
+        </div>
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="r-new">New Passage</button>
+          <button class="btn" id="r-play">Play Twice (exam style)<small>A short melodic phrase — echo back just the rhythm</small></button>
+          <button class="btn" id="r-reveal" disabled>Reveal Rhythm</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="r-status">Choose a length and meter, then press New Passage.</div>
+        <div class="listen-indicator" id="r-pulse">
+          <div class="note-dot"></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div class="chain-block">
+          <div class="chain-label">Chain build — play one length, then pause to think before the next</div>
+          <div class="chain-row" id="r-chain-row"></div>
+        </div>
+        <div id="r-reveal-area">
+          <div class="placeholder">The examiner plays a duple- or triple-time passage twice; tap or clap it back (from Grade 3, also say whether it is duple or triple). The reveal — notation in bars, with beaming, dots and the answer — appears here once you've generated and listened to a passage.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MELODY PANEL -->
+  <section class="panel" id="melody-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group">
+          <label class="group-label">Length (bars)</label>
+          <div class="segmented" id="m-bars">
+            <button data-val="2" class="active">2</button>
+            <button data-val="3">3</button>
+            <button data-val="4">4</button>
+            <button data-val="5">5</button>
+          </div>
+        </div>
+        <div class="ctrl-group">
+          <label class="group-label">Meter</label>
+          <div class="segmented segmented-wrap" id="m-meter">
+            <button data-val="duple" class="active">2/4</button>
+            <button data-val="triple">3/4</button>
+            <button data-val="common">4/4</button>
+            <button data-val="compound">6/8</button>
+            <button data-val="random">Mix</button>
+          </div>
+        </div>
+        <div class="ctrl-group">
+          <label class="group-label">Tempo</label>
+          <div class="tempo-row">
+            <input type="range" id="m-tempo" min="56" max="112" value="76" step="2">
+            <span class="tempo-val" id="m-tempo-val">76 bpm</span>
+          </div>
+        </div>
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="m-new">New Passage</button>
+          <button class="btn" id="m-play">Play Twice (exam style)<small>Listen, then sing it back</small></button>
+          <button class="btn" id="m-reveal" disabled>Reveal Melody</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="m-status">Choose a length and meter, then press New Passage. Phrases are movable-do (sung as C major). The examiner plays the phrase twice, combining melody and time — hum or sing it back.</div>
+        <div class="listen-indicator" id="m-pulse">
+          <div class="note-dot"></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div class="chain-block">
+          <div class="chain-label">Chain build — play one length, then pause to think before the next</div>
+          <div class="chain-row" id="m-chain-row"></div>
+        </div>
+        <div id="m-reveal-area">
+          <div class="placeholder">The melody reveal — solfa names and a shape line — will appear here once you've generated and listened to a passage.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PITCH PANEL -->
+  <section class="panel" id="pitch-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group" id="p-task-group">
+          <label class="group-label">Task</label>
+          <div class="segmented segmented-wrap" id="p-task"></div>
+        </div>
+        <div class="ctrl-group">
+          <label class="group-label">Tempo</label>
+          <div class="tempo-row">
+            <input type="range" id="p-tempo" min="50" max="100" value="70" step="2">
+            <span class="tempo-val" id="p-tempo-val">70 bpm</span>
+          </div>
+        </div>
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="p-new">New Question</button>
+          <button class="btn" id="p-play">Play<small>Listen, then respond out loud</small></button>
+          <button class="btn" id="p-reveal" disabled>Reveal</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="p-status">Choose a task, then press New Question.</div>
+        <div class="listen-indicator" id="p-pulse">
+          <div class="note-dot"></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div id="p-reveal-area">
+          <div class="placeholder">The Pitch reveal will appear here once you've generated and listened to a question.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIAD PANEL (Grade 4+) -->
+  <section class="panel" id="triad-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group">
+          <label class="group-label">Tempo</label>
+          <div class="tempo-row">
+            <input type="range" id="tr-tempo" min="50" max="100" value="70" step="2">
+            <span class="tempo-val" id="tr-tempo-val">70 bpm</span>
+          </div>
+        </div>
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="tr-new">New Triad</button>
+          <button class="btn" id="tr-play">Play<small>Listen, then respond out loud</small></button>
+          <button class="btn" id="tr-reveal" disabled>Reveal</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="tr-status">Press New Triad to begin.</div>
+        <div class="listen-indicator" id="tr-pulse">
+          <div class="note-dot"></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div id="tr-reveal-area">
+          <div class="placeholder">The Triad reveal will appear here once you've generated and listened to a triad.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CADENCE PANEL (Grade 6+) -->
+  <section class="panel" id="cadence-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group">
+          <label class="group-label">Tempo</label>
+          <div class="tempo-row">
+            <input type="range" id="c-tempo" min="50" max="100" value="66" step="2">
+            <span class="tempo-val" id="c-tempo-val">66 bpm</span>
+          </div>
+        </div>
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="c-new">New Progression</button>
+          <button class="btn" id="c-play">Play<small>Tonic sounds first, then the short progression</small></button>
+          <button class="btn" id="c-reveal" disabled>Reveal Cadence</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="c-status">Press New Progression to begin.</div>
+        <div class="listen-indicator" id="c-pulse">
+          <div class="note-dot"></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div id="c-reveal-area">
+          <div class="placeholder">The Cadence reveal will appear here once you've generated and listened to a progression.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORY PANEL (Grade 7+) -->
+  <section class="panel" id="memory-panel">
+    <div class="board">
+      <div class="controls">
+        <div class="ctrl-group btn-row">
+          <button class="btn primary" id="me-new">New Phrase</button>
+          <button class="btn" id="me-start" disabled>Sound Keynote &amp; Start Memorising<small>The score shows for the timed window below</small></button>
+          <button class="btn" id="me-reveal" disabled>Reveal &amp; Play From Notation</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="status-line" id="me-status">Press New Phrase to begin.</div>
+        <div class="countdown-big" id="me-countdown" style="display:none;">0:60</div>
+        <div class="progress-track" id="me-countdown-track" style="display:none;"><div class="progress-fill" id="me-countdown-fill"></div></div>
+        <div id="me-reveal-area">
+          <div class="placeholder">MEMORY test: with the keynote sounded first, study the printed phrase for the timed window (about 1 minute at Grade 7, 1½ minutes at Grade 8) — then play or sing it from memory before revealing.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="log-strip">
+    <div id="log-text">Today: 0 listening reps · streak: 0 days</div>
+    <button id="log-reset" title="Clear practice log on this device">Clear log</button>
+  </div>
+  <div class="note-mini">Sound is synthesised in the browser — turn your volume up. Works best with headphones or a speaker, not a phone on silent.</div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Theme toggle (light / dark) ----------
+  // The CSS already carries full light and dark token sets — light on bare
+  // :root, dark via both the prefers-color-scheme media query and an
+  // explicit :root[data-theme="dark"] override. This wires up a button that
+  // sets/clears that override so the choice isn't locked to the system
+  // setting, and remembers it per-browser so it sticks on reload.
+  (function setupThemeToggle(){
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if(!btn) return;
+    var STORAGE_KEY = 'ameb_aural_theme';
+
+    function systemPrefersDark(){
+      return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    function effectiveTheme(){
+      var explicit = root.getAttribute('data-theme');
+      return (explicit === 'light' || explicit === 'dark') ? explicit : (systemPrefersDark() ? 'dark' : 'light');
+    }
+    function refreshIcon(){
+      var isDark = effectiveTheme() === 'dark';
+      btn.classList.toggle('is-dark', isDark);
+      var label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+      btn.setAttribute('aria-label', label);
+      btn.title = label;
+    }
+
+    try{
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if(saved === 'light' || saved === 'dark'){ root.setAttribute('data-theme', saved); }
+    }catch(e){}
+    refreshIcon();
+
+    btn.addEventListener('click', function(){
+      var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem(STORAGE_KEY, next); }catch(e){}
+      refreshIcon();
+    });
+
+    // If the visitor never overrides it, keep following the system setting live.
+    if(window.matchMedia){
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onSystemChange = function(){ if(!root.getAttribute('data-theme')) refreshIcon(); };
+      if(mq.addEventListener) mq.addEventListener('change', onSystemChange);
+      else if(mq.addListener) mq.addListener(onSystemChange);
+    }
+  })();
+
+  // ---------- Audio engine ----------
+  var audioCtx = null, noiseBuffer = null;
+  function ensureAudio(){
+    if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+    if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
+    return audioCtx;
+  }
+  function getNoiseBuffer(ctx){
+    if(noiseBuffer) return noiseBuffer;
+    var len = Math.floor(ctx.sampleRate*0.06);
+    noiseBuffer = ctx.createBuffer(1, len, ctx.sampleRate);
+    var data = noiseBuffer.getChannelData(0);
+    for(var i=0;i<len;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 1.5); }
+    return noiseBuffer;
+  }
+  function playClick(ctx, time, accent){
+    var src = ctx.createBufferSource();
+    src.buffer = getNoiseBuffer(ctx);
+    var bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = accent ? 1900 : 1250;
+    bp.Q.value = 5.5;
+    var gain = ctx.createGain();
+    gain.gain.setValueAtTime(accent?0.95:0.55, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time+0.1);
+    src.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
+    src.start(time); src.stop(time+0.12);
+  }
+  function playTone(ctx, time, dur, freq, accent){
+    var osc = ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, time);
+    var gain = ctx.createGain();
+    // Wide gain gap (not just louder, but a crisper, faster-arriving attack)
+    // so the downbeat is unmistakable — otherwise every meter sounds identical.
+    var peak = accent ? 0.62 : 0.32;
+    var atk = accent ? 0.006 : 0.016;
+    var rel = Math.min(0.09, dur*0.35);
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(peak, time+atk);
+    gain.gain.setValueAtTime(peak, time+Math.max(atk, dur-rel));
+    gain.gain.linearRampToValueAtTime(0.0001, time+dur);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(time); osc.stop(time+dur+0.03);
+  }
+  // A soft low "thump" layered under every downbeat — like a felt conductor's
+  // beat rather than a click. This is what actually makes duple vs. triple
+  // vs. common vs. compound distinguishable by ear: the thump recurs every
+  // 2, 3, 4, or 2-dotted-crotchet beats depending on the meter.
+  function playDownbeatThump(ctx, time){
+    var osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(95, time);
+    osc.frequency.exponentialRampToValueAtTime(55, time+0.09);
+    var gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(0.38, time+0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, time+0.14);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(time); osc.stop(time+0.16);
+  }
+
+  // ---------- Music generation ----------
+  // Unit = semiquaver (16th note). quaver=2, crotchet=4, dotted quaver=3,
+  // dotted crotchet=6, minim=8, dotted minim=12.
+  var DUPLE_POOL = [        // barUnits = 8  (2/4 bar = two crotchet beats)
+    [[4,0],[4,0]],                     // crotchet, crotchet
+    [[2,0],[2,0],[4,0]],               // quaver quaver crotchet
+    [[4,0],[2,0],[2,0]],               // crotchet quaver quaver
+    [[2,0],[2,0],[2,0],[2,0]],         // four quavers
+    [[6,0],[2,0]],                     // dotted crotchet, quaver
+    [[2,0],[6,0]],                     // quaver, dotted crotchet
+    [[3,0],[1,0],[4,0]],               // dotted quaver-semiquaver, crotchet
+    [[4,0],[3,0],[1,0]],               // crotchet, dotted quaver-semiquaver
+    [[3,0],[1,0],[2,0],[2,0]],         // dotted quaver-semiquaver, two quavers
+    [[2,0],[2,0],[3,0],[1,0]],         // two quavers, dotted quaver-semiquaver
+    [[4,0],[4,1]],                     // crotchet, crotchet rest
+    [[2,1],[2,0],[4,0]],               // quaver rest, quaver, crotchet
+    [[8,0]]                            // minim
+  ];
+  var TRIPLE_POOL = [       // barUnits = 12  (3/4 bar = three crotchet beats)
+    [[4,0],[4,0],[4,0]],               // crotchet x3
+    [[2,0],[2,0],[4,0],[4,0]],         // two quavers, crotchet, crotchet
+    [[4,0],[2,0],[2,0],[4,0]],         // crotchet, two quavers, crotchet
+    [[4,0],[4,0],[2,0],[2,0]],         // crotchet, crotchet, two quavers
+    [[6,0],[4,0],[2,0]],               // dotted crotchet, crotchet, quaver
+    [[6,0],[2,0],[2,0],[2,0]],         // dotted crotchet, three quavers
+    [[3,0],[1,0],[4,0],[4,0]],         // dotted quaver-semiquaver, crotchet, crotchet
+    [[4,0],[3,0],[1,0],[4,0]],         // crotchet, dotted quaver-semiquaver, crotchet
+    [[4,0],[4,0],[3,0],[1,0]],         // crotchet, crotchet, dotted quaver-semiquaver
+    [[2,0],[2,0],[2,0],[2,0],[4,0]],   // four quavers, crotchet
+    [[4,0],[4,1],[4,0]],               // crotchet, crotchet rest, crotchet
+    [[12,0]]                           // dotted minim
+  ];
+  // Added after reviewing an AMEB 3rd Grade aural test book: the Melody
+  // section (unlike Rhythm) also uses common time (4/4, "C") and compound
+  // time (6/8) — see METERS below.
+  var COMMON_POOL = [       // barUnits = 16  (4/4 bar = four crotchet beats)
+    [[4,0],[4,0],[4,0],[4,0]],
+    [[2,0],[2,0],[4,0],[4,0],[4,0]],
+    [[4,0],[2,0],[2,0],[4,0],[4,0]],
+    [[4,0],[4,0],[2,0],[2,0],[4,0]],
+    [[4,0],[4,0],[4,0],[2,0],[2,0]],
+    [[6,0],[2,0],[4,0],[4,0]],
+    [[4,0],[6,0],[2,0],[4,0]],
+    [[3,0],[1,0],[4,0],[4,0],[4,0]],
+    [[4,0],[3,0],[1,0],[4,0],[4,0]],
+    [[4,0],[4,0],[4,0],[4,1]],
+    [[8,0],[4,0],[4,0]],
+    [[8,0],[8,0]]
+  ];
+  var COMPOUND_POOL = [     // barUnits = 12  (6/8 bar = two DOTTED-CROTCHET beats, each 6 units)
+    [[6,0],[6,0]],                     // dotted crotchet, dotted crotchet
+    [[2,0],[2,0],[2,0],[6,0]],         // three quavers, dotted crotchet
+    [[6,0],[2,0],[2,0],[2,0]],         // dotted crotchet, three quavers
+    [[4,0],[2,0],[6,0]],               // crotchet-quaver (long-short), dotted crotchet
+    [[6,0],[4,0],[2,0]],               // dotted crotchet, crotchet-quaver
+    [[2,0],[2,0],[2,0],[2,0],[2,0],[2,0]], // six quavers (two beamed groups of three)
+    [[2,0],[4,0],[2,0],[4,0]],         // quaver-crotchet, quaver-crotchet (short-long)
+    [[6,0],[6,1]],                     // dotted crotchet, dotted-crotchet rest
+    [[3,0],[1,0],[2,0],[6,0]],         // dotted-quaver-semiquaver, quaver, dotted crotchet
+    [[6,0],[3,0],[1,0],[2,0]]          // dotted crotchet, dotted-quaver-semiquaver, quaver
+  ];
+  // Extra cells layered on top of the base pools above, added only from
+  // certain grades onward (see rhythmTier/poolFor below) — calibrated
+  // against the exam book's own examples, which use tied syncopation from
+  // early grades and genuine borrowed triplets from the upper rhythm grades.
+  //
+  // Syncopation: a note that starts off the beat and is TIED through the
+  // following main beat, so the beat is felt but not re-struck. Cell format
+  // gains a third element, [u, restFlag, tieToNextFlag].
+  var DUPLE_SYNC_EXTRA = [
+    [[2,0],[2,0,1],[4,0]]              // quaver, quaver TIED into the crotchet that follows
+  ];
+  var TRIPLE_SYNC_EXTRA = [
+    [[2,0],[2,0,1],[4,0],[4,0]],
+    [[4,0],[2,0],[2,0,1],[4,0]]
+  ];
+  var COMMON_SYNC_EXTRA = [
+    [[2,0],[2,0,1],[4,0],[4,0],[4,0]],
+    [[4,0],[2,0],[2,0,1],[4,0],[4,0]],
+    [[4,0],[4,0],[2,0],[2,0,1],[4,0]]
+  ];
+  var COMPOUND_SYNC_EXTRA = [
+    [[2,0],[2,0],[2,0,1],[6,0]]        // two quavers, then a quaver TIED into the next dotted-crotchet beat
+  ];
+  // Genuine triplets: a { trip:3, beat:N } marker replaces one full beat
+  // (N units) with three equal notes "borrowed" from the next division —
+  // expanded into three leaf cells by expandPoolCell() below. Only used in
+  // simple time (duple/triple/common); compound time's natural beat is
+  // already a triplet-feel, so a true borrowed triplet there is rare enough
+  // at this level to leave out.
+  var DUPLE_TRIPLET_EXTRA = [
+    [{trip:3,beat:4},[4,0]],
+    [[4,0],{trip:3,beat:4}]
+  ];
+  var TRIPLE_TRIPLET_EXTRA = [
+    [{trip:3,beat:4},[4,0],[4,0]],
+    [[4,0],{trip:3,beat:4},[4,0]],
+    [[4,0],[4,0],{trip:3,beat:4}]
+  ];
+  var COMMON_TRIPLET_EXTRA = [
+    [{trip:3,beat:4},[4,0],[4,0],[4,0]],
+    [[4,0],[4,0],{trip:3,beat:4},[4,0]]
+  ];
+
+  // Rhythmic-vocabulary tier per grade, driving both which extra pool cells
+  // are mixed in and how often a cross-barline tie gets generated. Grades
+  // 6-8 don't have their own Rhythm tab, but Memory reuses this same
+  // generator — mapped to tier 5, matching the richly tied/syncopated
+  // phrases the exam book's Grade 7-8 Memory section actually prints.
+  var RHYTHM_TIER_BY_GRADE = { prelim:0, '1':1, '2':2, '3':3, '4':4, '5':5, '6':5, '7':5, '8':5 };
+  function rhythmTier(grade){ return RHYTHM_TIER_BY_GRADE.hasOwnProperty(grade) ? RHYTHM_TIER_BY_GRADE[grade] : 3; }
+  var TIE_CHANCE_BY_TIER = { 0:0, 1:0.10, 2:0.18, 3:0.26, 4:0.34, 5:0.42 };
+
+  function poolFor(meterKey, tier){
+    var base, syncExtra, tripletExtra;
+    if(meterKey === 'duple'){ base=DUPLE_POOL; syncExtra=DUPLE_SYNC_EXTRA; tripletExtra=DUPLE_TRIPLET_EXTRA; }
+    else if(meterKey === 'triple'){ base=TRIPLE_POOL; syncExtra=TRIPLE_SYNC_EXTRA; tripletExtra=TRIPLE_TRIPLET_EXTRA; }
+    else if(meterKey === 'common'){ base=COMMON_POOL; syncExtra=COMMON_SYNC_EXTRA; tripletExtra=COMMON_TRIPLET_EXTRA; }
+    else { base=COMPOUND_POOL; syncExtra=COMPOUND_SYNC_EXTRA; tripletExtra=[]; }
+    var pool = base.slice();
+    // Below Grade 3 (tier < 3) the book's Rhythm passages use no semiquavers and
+    // no dotted-quaver–semiquaver figures — drop any base cell that contains a
+    // 1-unit (semiquaver) or 3-unit (dotted-quaver) leaf.
+    if(tier < 3){
+      pool = pool.filter(function(cell){
+        return cell.every(function(c){ return c.trip || (c[0] !== 1 && c[0] !== 3); });
+      });
+    }
+    if(tier >= 2) pool = pool.concat(syncExtra);
+    if(tier >= 4) pool = pool.concat(tripletExtra);   // Grade 4: a light first taste of triplets
+    if(tier >= 5) pool = pool.concat(tripletExtra);   // Grade 5+: doubled weight, matching the book's own frequency
+    return pool;
+  }
+
+  // Every notated meter maps to the exam's actual duple/triple question —
+  // 4/4 and 6/8 both still answer "duple" (6/8 is compound DUPLE: two
+  // dotted-crotchet beats), only 3/4 answers "triple".
+  var METERS = {
+    duple:    { barUnits: 8,  beatGroupUnit: 4, sigTop: '2', sigBottom: '4', answer: 'duple',  display: '2/4',        pool: function(){ return DUPLE_POOL; } },
+    triple:   { barUnits: 12, beatGroupUnit: 4, sigTop: '3', sigBottom: '4', answer: 'triple', display: '3/4',        pool: function(){ return TRIPLE_POOL; } },
+    common:   { barUnits: 16, beatGroupUnit: 4, sigTop: 'C', sigBottom: '',  answer: 'duple',  display: '4/4 (common)', pool: function(){ return COMMON_POOL; } },
+    compound: { barUnits: 12, beatGroupUnit: 6, sigTop: '6', sigBottom: '8', answer: 'duple',  display: '6/8 (compound)', pool: function(){ return COMPOUND_POOL; } }
+  };
+
+  // Diatonic major-scale degree helpers. Degree 0 = tonic (movable-do "Do");
+  // negative/large degrees extend below/above the home octave, since Grade 3
+  // melodies range further than a single octave.
+  var SCALE_STEPS = [0,2,4,5,7,9,11];
+  var DEGREE_LETTERS = ['C','D','E','F','G','A','B'];
+  var DEGREE_SOLFA = ['Do','Re','Mi','Fa','Sol','La','Ti'];
+  function degreeIndex(deg){ return ((deg % 7) + 7) % 7; }
+  function degreeOctave(deg){ return Math.floor(deg/7); }
+  function isTonicDegree(deg){ return degreeIndex(deg) === 0; }
+  function degreeFreq(deg){
+    return 261.63 * Math.pow(2, (degreeOctave(deg)*12 + SCALE_STEPS[degreeIndex(deg)]) / 12);
+  }
+  function degreeLetter(deg){
+    var mark = deg >= 7 ? '′' : (deg < 0 ? ',' : '');
+    return DEGREE_LETTERS[degreeIndex(deg)] + mark;
+  }
+  function degreeSolfa(deg){
+    var mark = deg >= 7 ? '′' : (deg < 0 ? ',' : '');
+    return DEGREE_SOLFA[degreeIndex(deg)] + mark;
+  }
+
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
+  // A pool cell is either the classic [u, restFlag, tieToNextFlag?] tuple,
+  // or a { trip:3, beat:N } marker meaning "one N-unit beat, played as a
+  // triplet". expandPoolCell() turns either shape into one or more leaf
+  // cells — the only shape everything downstream (degrees/flatten/render)
+  // needs to understand.
+  function expandPoolCell(c){
+    if(c && c.trip){
+      var each = c.beat/3;
+      var gid = 'trip' + Math.random().toString(36).slice(2,8);
+      var leaves = [];
+      for(var k=0;k<3;k++){ leaves.push({u:each, rest:false, tripletGroup:gid, tripletPos:k}); }
+      return leaves;
+    }
+    return [{u:c[0], rest: !!c[1], tieToNext: !!c[2]}];
+  }
+
+  function generateBars(meterKey, numBars, grade){
+    var cfg = METERS[meterKey] || METERS.duple;
+    var tier = rhythmTier(grade);
+    var pool = poolFor(meterKey, tier);
+    var bars = [];
+    for(var i=0;i<numBars;i++){
+      var picked = pick(pool);
+      var pattern = [];
+      picked.forEach(function(c){ expandPoolCell(c).forEach(function(leaf){ pattern.push(leaf); }); });
+      bars.push(pattern);
+    }
+    // last cell of last bar must not be a rest, and can't be left tied into
+    // nothing — both would leave the passage unresolved.
+    var lastBar = bars[bars.length-1];
+    var lastCell = lastBar[lastBar.length-1];
+    if(lastCell.rest){ lastCell.rest = false; }
+    lastCell.tieToNext = false;
+
+    // Cross-barline ties: with a grade-scaled chance, sustain the last note
+    // of one bar into the first note of the next, notated as two tied
+    // values rather than one unfamiliar value spanning the barline — this
+    // is standard in the exam book from the early grades on. Never tie
+    // into or out of a triplet cell, so the two features stay independent.
+    var tieChance = TIE_CHANCE_BY_TIER[tier] || 0;
+    if(tieChance > 0){
+      for(var b=0; b<bars.length-1; b++){
+        var lastA = bars[b][bars[b].length-1];
+        var firstB = bars[b+1][0];
+        if(!lastA.rest && !firstB.rest && !lastA.tripletGroup && !firstB.tripletGroup && Math.random() < tieChance){
+          lastA.tieToNext = true;
+        }
+      }
+    }
+
+    return { meterKey: meterKey, answer: cfg.answer, barUnits: cfg.barUnits, beatGroupUnit: cfg.beatGroupUnit, bars: bars };
+  }
+
+  // Melodic-motion profile per grade, calibrated against the book's printed
+  // Melody / Memory examples: Preliminary–Grade 1 phrases are almost entirely
+  // stepwise inside a 6th; from Grade 2 the 3rd, 4th and (less often) 5th leap
+  // become common and the range opens toward an octave and beyond. `lo`/`hi` are
+  // scale-degree bounds (0 = movable-do tonic ≈ middle C).
+  var MELODY_PROFILE_BY_GRADE = {
+    prelim:{ pStep:0.84, p3rd:0.12, p4th:0.02, p5th:0.00, pRep:0.02, lo:0,  hi:5  },
+    '1':   { pStep:0.80, p3rd:0.14, p4th:0.03, p5th:0.01, pRep:0.02, lo:0,  hi:6  },
+    '2':   { pStep:0.62, p3rd:0.22, p4th:0.09, p5th:0.03, pRep:0.04, lo:0,  hi:7  },
+    '3':   { pStep:0.52, p3rd:0.26, p4th:0.12, p5th:0.05, pRep:0.05, lo:0,  hi:7  },
+    '4':   { pStep:0.48, p3rd:0.27, p4th:0.14, p5th:0.06, pRep:0.05, lo:-1, hi:8  },
+    '5':   { pStep:0.45, p3rd:0.27, p4th:0.15, p5th:0.08, pRep:0.05, lo:-1, hi:8  },
+    '6':   { pStep:0.44, p3rd:0.27, p4th:0.15, p5th:0.09, pRep:0.05, lo:-2, hi:9  },
+    '7':   { pStep:0.42, p3rd:0.27, p4th:0.16, p5th:0.10, pRep:0.05, lo:-2, hi:9  },
+    '8':   { pStep:0.40, p3rd:0.27, p4th:0.17, p5th:0.11, pRep:0.05, lo:-3, hi:10 }
+  };
+  function melodyProfile(grade){ return MELODY_PROFILE_BY_GRADE[grade] || MELODY_PROFILE_BY_GRADE['3']; }
+
+  function addMelodyDegrees(passage, grade){
+    var cells = [];
+    passage.bars.forEach(function(bar){ bar.forEach(function(c){ cells.push(c); }); });
+    var prof = melodyProfile(grade || currentGrade);
+    var starts = [0,2,4];
+    var degree = pick(starts);
+    cells.forEach(function(c, idx){
+      if(c.rest){ return; }
+      var prev = idx > 0 ? cells[idx-1] : null;
+      var tiedFromPrev = prev && !prev.rest && prev.tieToNext;
+      if(idx === 0){
+        c.degree = degree;
+        return;
+      }
+      if(tiedFromPrev){
+        c.degree = degree; // a tied note repeats the pitch it continues — no re-attack, no new pitch
+        return;
+      }
+      var r = Math.random();
+      var step;
+      if(r < prof.pStep) step = (Math.random()<0.5?-1:1);                        // 2nd
+      else if(r < prof.pStep + prof.p3rd) step = (Math.random()<0.5?-2:2);       // 3rd
+      else if(r < prof.pStep + prof.p3rd + prof.p4th) step = (Math.random()<0.5?-3:3); // 4th
+      else if(r < prof.pStep + prof.p3rd + prof.p4th + prof.p5th) step = (Math.random()<0.5?-4:4); // 5th
+      else step = 0;                                                            // repeated note
+      degree = clamp(degree + step, prof.lo, prof.hi);
+      c.degree = degree;
+    });
+    // find last & second-to-last sounding cells for a cadence
+    var sounding = cells.filter(function(c){ return !c.rest; });
+    if(sounding.length){
+      sounding[sounding.length-1].degree = 0;
+      if(sounding.length > 1){
+        sounding[sounding.length-2].degree = 1; // leading tone (Ti/2nd degree) into the final tonic
+      }
+      // Forcing the cadence above can leave a tie pointing at a note that no
+      // longer shares its pitch (a tie requires the same pitch on both
+      // ends) — drop any tie that the cadence just invalidated.
+      for(var i=1;i<sounding.length;i++){
+        var p = sounding[i-1], n = sounding[i];
+        if(p.tieToNext && p.degree !== n.degree){ p.tieToNext = false; }
+      }
+    }
+    return passage;
+  }
+
+  function flatten(passage){
+    var out = [];
+    var u = 0;
+    passage.bars.forEach(function(bar, bi){
+      bar.forEach(function(c){
+        out.push({start:u, u:c.u, rest:c.rest, degree:c.degree, barStart: (u % passage.barUnits === 0), tie: !!c.tieToNext, tripletGroup: c.tripletGroup, tripletPos: c.tripletPos});
+        u += c.u;
+      });
+    });
+    return {cells: out, totalUnits: u};
+  }
+
+  // ---------- Playback ----------
+  var UNITS_PER_BEAT = 4; // 1 crotchet beat = 4 semiquaver units
+  function secPerUnitFor(tempo){ return (60/tempo)/UNITS_PER_BEAT; }
+
+  function schedulePassage(ctx, passage, tempo, kind, startTime){
+    // Both tabs play a short melodic phrase, same as the real exam — the
+    // rhythm question is a piece of music, not a metronome click. The
+    // student's job for the rhythm tab is only to echo the RHYTHM back;
+    // the pitches exist purely to make the listening realistic.
+    var flat = flatten(passage);
+    var secPerUnit = secPerUnitFor(tempo);
+    var cells = flat.cells;
+    for(var i=0;i<cells.length;i++){
+      var c = cells[i];
+      var t = startTime + c.start*secPerUnit;
+      if(c.barStart){ playDownbeatThump(ctx, t); } // plays even under a rest, so the pulse never drops out
+      if(c.rest) continue;
+      // A note that is itself the continuation of a tie was already sounded
+      // by the note before it — no second attack here, it just lengthens
+      // the tone already ringing.
+      var isContinuation = i>0 && cells[i-1].tie && !cells[i-1].rest;
+      if(isContinuation) continue;
+      // Walk forward through any chain of ties so the whole tied group
+      // sounds as one continuous tone with a single attack, matching what
+      // the tie curve in the notation implies.
+      var totalUnits = c.u, j = i;
+      while(cells[j].tie && j+1<cells.length && !cells[j+1].rest){
+        totalUnits += cells[j+1].u;
+        j++;
+      }
+      playTone(ctx, t, totalUnits*secPerUnit*0.88, degreeFreq(c.degree), c.barStart);
+    }
+    return flat.totalUnits*secPerUnit;
+  }
+
+  // A single, meter-agnostic "listening" indicator: one dot that flashes on
+  // every sounding note and a progress bar for elapsed time. Deliberately
+  // does NOT group by beat or bar, so it can't be used to count beats-per-bar
+  // and give away duple vs. triple time — that's for the student's ear to decide.
+  function animateListening(indicatorEl, passage, tempo, ctxStartTime, ctx){
+    var dot = indicatorEl.querySelector('.note-dot');
+    var fill = indicatorEl.querySelector('.progress-fill');
+    var flat = flatten(passage);
+    var secPerUnit = secPerUnitFor(tempo);
+    var totalSec = flat.totalUnits*secPerUnit;
+    var delayBase = (ctxStartTime - ctx.currentTime)*1000;
+    var cells = flat.cells;
+
+    cells.forEach(function(c, i){
+      if(c.rest) return;
+      // Don't flash on a tied continuation — there's no new attack there.
+      var isContinuation = i>0 && cells[i-1].tie && !cells[i-1].rest;
+      if(isContinuation) return;
+      var onAt = Math.max(0, delayBase + c.start*secPerUnit*1000);
+      var holdMs = Math.min(160, c.u*secPerUnit*1000*0.6);
+      setTimeout(function(){ dot.classList.add('on'); }, onAt);
+      setTimeout(function(){ dot.classList.remove('on'); }, onAt + holdMs);
+    });
+
+    if(fill){
+      setTimeout(function(){
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
+        void fill.offsetWidth;
+        fill.style.transition = 'width ' + totalSec.toFixed(2) + 's linear';
+        fill.style.width = '100%';
+      }, Math.max(0, delayBase));
+    }
+  }
+  function resetIndicator(indicatorEl){
+    var dot = indicatorEl.querySelector('.note-dot');
+    var fill = indicatorEl.querySelector('.progress-fill');
+    if(dot) dot.classList.remove('on');
+    if(fill){ fill.style.transition = 'none'; fill.style.width = '0%'; }
+  }
+
+  // ---------- Reveal rendering: real rhythm notation ----------
+  function noteName(u, rest){
+    var names = {1:'Semiquaver', 2:'Quaver', 3:'Dotted quaver', 4:'Crotchet', 6:'Dotted crotchet', 8:'Minim', 12:'Dotted minim'};
+    var name = names[u] || (u + '-unit');
+    return rest ? (name + ' rest') : name;
+  }
+
+  var NOTATION_UNIT_PX = 15;
+  var NOTATION_MIDY = 66;
+  var NOTATION_STEM_H = 34;
+
+  // Lay out every cell on a single continuous "rhythm staff" (one line —
+  // pitch is irrelevant here), tracking both its pixel x-position and its
+  // position in absolute semiquaver units so beat-grouping for beams can be
+  // computed correctly regardless of bar or meter.
+  function buildRhythmLayout(passage){
+    var x = 40;
+    var unitPos = 0;
+    var barsLayout = [];
+    var flatCells = [];
+    var beatGroupUnit = passage.beatGroupUnit || UNITS_PER_BEAT;
+    passage.bars.forEach(function(bar){
+      var barStartX = x;
+      var localCells = [];
+      bar.forEach(function(c){
+        var item = { u: c.u, rest: c.rest, x: x, beat: Math.floor(unitPos/beatGroupUnit), tie: !!c.tieToNext, tripletGroup: c.tripletGroup, tripletPos: c.tripletPos };
+        localCells.push(item);
+        flatCells.push(item);
+        x += c.u*NOTATION_UNIT_PX + 18;
+        unitPos += c.u;
+      });
+      var barEndX = x + 2;
+      barsLayout.push({ x0: barStartX, x1: barEndX, cells: localCells });
+      x = barEndX + 14;
+    });
+    return { barsLayout: barsLayout, flatCells: flatCells, totalWidth: x + 18 };
+  }
+
+  // Group consecutive, non-rest, sub-beat cells (quaver/dotted-quaver/semiquaver)
+  // that fall in the same crotchet beat — that's the standard rule for what
+  // gets beamed together vs. flagged alone.
+  function computeBeamGroups(flatCells){
+    var groups = [];
+    var current = [];
+    flatCells.forEach(function(c){
+      var beamable = !c.rest && c.u < UNITS_PER_BEAT;
+      var continues = current.length && current[current.length-1].beat === c.beat;
+      if(beamable && (current.length === 0 || continues)){
+        current.push(c);
+      } else {
+        if(current.length > 1) groups.push(current.slice());
+        current = beamable ? [c] : [];
+      }
+    });
+    if(current.length > 1) groups.push(current.slice());
+    groups.forEach(function(g){ g.forEach(function(c){ c.beamed = true; }); });
+    return groups;
+  }
+
+  function svgLine(x1,y1,x2,y2,w,cls){ return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+(cls||'var(--ink)')+'" stroke-width="'+w+'" stroke-linecap="round" />'; }
+
+  // Rough monospace text-width estimate (IBM Plex Mono), generous on purpose —
+  // better to over-estimate and give a label a little extra room than to
+  // under-estimate and let two labels touch.
+  function estimateTextWidth(text, fontSize){ return text.length * fontSize * 0.64; }
+
+  // Greedy row-stacking so a run of horizontal, center-anchored labels never
+  // overlaps: sort by x-center, and place each label in the first row whose
+  // last-placed label (by right edge) clears this one with a gap; otherwise
+  // start a new row below. Classic interval-scheduling layout. Returns a
+  // row index per input item (same order as `items`) plus the row count.
+  function stackLabelRows(items, gap){
+    gap = gap == null ? 4 : gap;
+    var rowRight = [];
+    var rowIndex = new Array(items.length);
+    var order = items.map(function(it, i){ return i; });
+    order.sort(function(a, b){ return items[a].cx - items[b].cx; });
+    order.forEach(function(i){
+      var it = items[i];
+      var halfW = estimateTextWidth(it.text, it.fontSize) / 2;
+      var left = it.cx - halfW, right = it.cx + halfW;
+      var placed = -1;
+      for(var r=0; r<rowRight.length; r++){
+        if(left > rowRight[r] + gap){ placed = r; break; }
+      }
+      if(placed === -1){ placed = rowRight.length; rowRight.push(-Infinity); }
+      rowRight[placed] = right;
+      rowIndex[i] = placed;
+    });
+    return { rowIndex: rowIndex, rowCount: rowRight.length };
+  }
+
+  function renderRhythmReveal(container, passage){
+    var layout = buildRhythmLayout(passage);
+    var groups = computeBeamGroups(layout.flatCells);
+    var midY = NOTATION_MIDY, stemTopY = midY - NOTATION_STEM_H;
+    var parts = [];
+
+    // neutral (unpitched) clef — two thick strokes, standard for rhythm-only staves
+    parts.push('<rect x="10" y="'+(midY-9)+'" width="3" height="18" fill="var(--ink)" />');
+    parts.push('<rect x="17" y="'+(midY-9)+'" width="3" height="18" fill="var(--ink)" />');
+    // time signature
+    var sig = METERS[passage.meterKey] || METERS.duple;
+    if(sig.sigBottom){
+      parts.push('<text x="32" y="'+(midY-5)+'" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="middle">'+sig.sigTop+'</text>');
+      parts.push('<text x="32" y="'+(midY+17)+'" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="middle">'+sig.sigBottom+'</text>');
+    } else {
+      // common time: single "C" symbol, vertically centred on the staff line
+      parts.push('<text x="32" y="'+(midY+7)+'" font-family="Fraunces, serif" font-size="24" font-weight="600" fill="var(--ink)" text-anchor="middle">'+sig.sigTop+'</text>');
+    }
+    // single staff line
+    parts.push(svgLine(0, midY, layout.totalWidth, midY, 1.4, 'var(--line-strong)'));
+    // barlines (between bars)
+    for(var bi=1; bi<layout.barsLayout.length; bi++){
+      parts.push(svgLine(layout.barsLayout[bi].x0-9, midY-24, layout.barsLayout[bi].x0-9, midY+24, 1.3));
+    }
+    // final double barline
+    var lastX = layout.barsLayout[layout.barsLayout.length-1].x1;
+    parts.push(svgLine(lastX-4, midY-24, lastX-4, midY+24, 1.3));
+    parts.push(svgLine(lastX+2, midY-24, lastX+2, midY+24, 3));
+
+    // noteheads, rests, stems, dots
+    layout.flatCells.forEach(function(c){
+      var cx = c.x + 6, stemX = c.x + 12;
+      if(c.rest){
+        if(c.u >= UNITS_PER_BEAT){
+          // crotchet-or-longer rest: simplified zigzag glyph
+          var y0=midY-11, y1=midY-3, y2=midY+3, y3=midY+11;
+          parts.push('<path d="M '+(cx-3)+' '+y0+' L '+(cx+4)+' '+y1+' L '+(cx-4)+' '+y2+' L '+(cx+3)+' '+y3+'" fill="none" stroke="var(--ink)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />');
+        } else {
+          // quaver rest: simplified flagged-stroke glyph
+          var top2 = midY-9, bot2 = midY+10;
+          parts.push('<path d="M '+(cx-1)+' '+top2+' C '+(cx+6)+' '+(top2+2)+' '+(cx+2)+' '+(top2+9)+' '+(cx-3)+' '+(top2+11)+' M '+(cx-3)+' '+(top2+11)+' L '+(cx+4)+' '+bot2+'" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />');
+        }
+        return;
+      }
+      var hollow = c.u >= 8; // minim / dotted minim
+      parts.push('<ellipse cx="'+cx+'" cy="'+midY+'" rx="6.4" ry="4.6" transform="rotate(-18 '+cx+' '+midY+')" fill="'+(hollow?'var(--surface)':'var(--ink)')+'" stroke="var(--ink)" stroke-width="'+(hollow?1.4:0)+'" />');
+      if(c.u===3 || c.u===6 || c.u===12){ parts.push('<circle cx="'+(cx+9)+'" cy="'+(midY-1)+'" r="1.8" fill="var(--ink)" />'); }
+      parts.push(svgLine(stemX, midY-2, stemX, stemTopY, 1.6));
+      if(!c.beamed && c.u < UNITS_PER_BEAT){
+        // lone sub-beat note: single flag
+        parts.push('<path d="M '+stemX+' '+stemTopY+' C '+(stemX+10)+' '+(stemTopY+2)+' '+(stemX+11)+' '+(stemTopY+14)+' '+stemX+' '+(stemTopY+20)+'" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" />');
+      }
+    });
+
+    // beams
+    groups.forEach(function(g){
+      var x1 = g[0].x+12, x2 = g[g.length-1].x+12;
+      parts.push(svgLine(x1, stemTopY, x2, stemTopY, 3.2));
+      g.forEach(function(c, gi){
+        if(c.u === 1){ // semiquaver: add a short secondary beam hooking toward its neighbour
+          var neighbour = gi > 0 ? g[gi-1] : g[gi+1];
+          var nx = neighbour.x+12, cxp = c.x+12;
+          var hookX = cxp + (nx-cxp)*0.5;
+          parts.push(svgLine(cxp, stemTopY+5, hookX, stemTopY+5, 3.2));
+        }
+      });
+    });
+
+    // triplet brackets — a small bracket + "3" over any group of leaves that
+    // share a tripletGroup id, marking a borrowed 3-in-the-time-of-2 figure
+    var tripletGroups = {};
+    layout.flatCells.forEach(function(c){
+      if(c.tripletGroup){ (tripletGroups[c.tripletGroup] = tripletGroups[c.tripletGroup] || []).push(c); }
+    });
+    Object.keys(tripletGroups).forEach(function(gid){
+      var g = tripletGroups[gid];
+      if(g.length < 2) return;
+      var tx1 = g[0].x+12, tx2 = g[g.length-1].x+12, bracketY = stemTopY - 6;
+      parts.push(svgLine(tx1, bracketY, tx2, bracketY, 1.3));
+      parts.push('<text x="'+((tx1+tx2)/2)+'" y="'+(bracketY-4)+'" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="var(--ink)" text-anchor="middle">3</text>');
+    });
+
+    // tie curves — a shallow arc under each pair of notes where the earlier
+    // one is marked tied into the next (same pitch, no re-attack)
+    layout.flatCells.forEach(function(c, i){
+      if(!c.tie) return;
+      var next = layout.flatCells[i+1];
+      if(!next || next.rest) return;
+      var tx1 = c.x + 6, tx2 = next.x + 6, tmid = (tx1+tx2)/2, dip = midY + 16;
+      parts.push('<path d="M '+tx1+' '+(midY+6)+' Q '+tmid+' '+dip+' '+tx2+' '+(midY+6)+'" fill="none" stroke="var(--ink-soft)" stroke-width="1.4" stroke-linecap="round" />');
+    });
+
+    // captions (note names) — horizontal, row-stacked so tight sub-beat
+    // clusters never overlap: each label sits on the first free row below
+    // the staff, dropping to a new row only when it would clash.
+    var CAPTION_FONT = 9.5, CAPTION_ROW_H = 13, CAPTION_BASE_Y = midY + 40;
+    var captionItems = layout.flatCells.map(function(c){
+      var text = c.tripletGroup ? 'Triplet quaver' : noteName(c.u, c.rest);
+      if(c.tie) text += ' (tied)';
+      return { cx: c.x + 6, text: text, fontSize: CAPTION_FONT };
+    });
+    var captionStack = stackLabelRows(captionItems, 5);
+    layout.flatCells.forEach(function(c, i){
+      var item = captionItems[i];
+      var labelY = CAPTION_BASE_Y + captionStack.rowIndex[i] * CAPTION_ROW_H;
+      parts.push('<text x="'+item.cx+'" y="'+labelY+'" font-family="IBM Plex Mono, monospace" font-size="'+CAPTION_FONT+'" fill="var(--ink-faint)" text-anchor="middle">'+item.text+'</text>');
+    });
+
+    var hasTie = layout.flatCells.some(function(c){ return c.tie; });
+    var hasTriplet = layout.flatCells.some(function(c){ return c.tripletGroup; });
+    var featureNotes = [];
+    if(hasTie) featureNotes.push('includes a note tied across the beat/barline');
+    if(hasTriplet) featureNotes.push('includes a triplet (3 in the time of 2)');
+    var meterLabel = (passage.answer === 'triple' ? 'Triple time (feels in 3s — think ONE-two-three)' : 'Duple time (feels in 2s — think ONE-two)') + ' · ' + sig.display + (featureNotes.length ? ' · ' + featureNotes.join(' · ') : '');
+    var svgHeight = Math.max(128, CAPTION_BASE_Y + captionStack.rowCount * CAPTION_ROW_H + 12);
+    var svg = '<svg width="'+layout.totalWidth+'" height="'+svgHeight+'" viewBox="0 0 '+layout.totalWidth+' '+svgHeight+'" role="img" aria-label="Rhythm notation">'+parts.join('')+'</svg>';
+    container.innerHTML = '<div class="reveal"><div class="meter-tag">'+meterLabel+'</div><div class="notation-scroll">'+svg+'</div></div>';
+  }
+
+  // Piano-roll style melody reveal: x = real elapsed time (so a note's pill
+  // WIDTH is its duration, just like the rhythm notation's note values),
+  // y = pitch height (the contour the teacher already liked). Bars are
+  // ruled in so duration reads against the beat, not just relative to
+  // its neighbours.
+  var CONTOUR_PX_PER_UNIT = 23;
+  function renderMelodyReveal(container, passage){
+    var flat = flatten(passage);
+    var sounding = flat.cells.filter(function(c){ return !c.rest; });
+    var sig = METERS[passage.meterKey] || METERS.duple;
+    var meterLabel = (passage.answer === 'triple' ? 'Triple time' : 'Duple time') + ' · ' + sig.display;
+
+    var degs = sounding.map(function(c){ return c.degree; });
+    var minDeg = Math.min.apply(null, degs.concat([0]));
+    var maxDeg = Math.max.apply(null, degs.concat([0]));
+    var span = Math.max(1, maxDeg - minDeg);
+    var padTop = 22, padBottom = 44;
+    var h = 150;
+    var yFor = function(deg){ return padTop + (1 - (deg-minDeg)/span) * (h-padTop-padBottom); };
+
+    var padX = 16;
+    var w = Math.max(360, padX*2 + flat.totalUnits*CONTOUR_PX_PER_UNIT);
+    var xFor = function(u){ return padX + u*CONTOUR_PX_PER_UNIT; };
+
+    var parts = [];
+
+    // bar rules, for reading duration against the beat
+    var u = 0;
+    passage.bars.forEach(function(bar, bi){
+      if(bi > 0){ parts.push(svgLine(xFor(u), padTop-10, xFor(u), h-padBottom+10, 1, 'var(--line)')); }
+      bar.forEach(function(c){ u += c.u; });
+    });
+    parts.push(svgLine(xFor(u), padTop-10, xFor(u), h-padBottom+10, 1, 'var(--line)'));
+
+    // faint rest markers on a neutral baseline, sized to their duration
+    var restY = h - padBottom + 10;
+    flat.cells.forEach(function(c){
+      if(!c.rest) return;
+      parts.push('<rect x="'+xFor(c.start).toFixed(1)+'" y="'+(restY-3)+'" width="'+Math.max(2,c.u*CONTOUR_PX_PER_UNIT-3).toFixed(1)+'" height="6" rx="3" fill="none" stroke="var(--ink-faint)" stroke-width="1.2" stroke-dasharray="2.5 2.5" />');
+    });
+
+    // contour line through each note's centre
+    var centers = sounding.map(function(c){ return { x: xFor(c.start + c.u/2), y: yFor(c.degree), c: c }; });
+    var pathD = centers.map(function(p,i){ return (i===0?'M':'L') + p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join(' ');
+    parts.push('<path d="'+pathD+'" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.55" />');
+
+    // duration pills — width IS the note's duration, at true elapsed-time scale
+    var pillH = 11;
+    sounding.forEach(function(c){
+      var isTonic = isTonicDegree(c.degree);
+      var x = xFor(c.start), width = Math.max(6, c.u*CONTOUR_PX_PER_UNIT - 3), y = yFor(c.degree);
+      parts.push('<rect x="'+x.toFixed(1)+'" y="'+(y-pillH/2).toFixed(1)+'" width="'+width.toFixed(1)+'" height="'+pillH+'" rx="'+(pillH/2)+'" fill="'+(isTonic?'var(--teal-ink)':'var(--teal-glow)')+'" />');
+    });
+
+    // tie connectors — a shallow arc bridging two same-pitch pills where the
+    // earlier one is marked tied into the next (no re-attack there)
+    for(var si=0; si<sounding.length-1; si++){
+      if(!sounding[si].tie) continue;
+      var tA = sounding[si], tB = sounding[si+1];
+      var ay = yFor(tA.degree), by = yFor(tB.degree);
+      var ax = xFor(tA.start + tA.u) - 2, bx = xFor(tB.start) + 2;
+      var tmidx = (ax+bx)/2, peak = Math.min(ay,by) - pillH/2 - 6;
+      parts.push('<path d="M '+ax.toFixed(1)+' '+(ay-pillH/2).toFixed(1)+' Q '+tmidx.toFixed(1)+' '+peak.toFixed(1)+' '+bx.toFixed(1)+' '+(by-pillH/2).toFixed(1)+'" fill="none" stroke="var(--teal-ink)" stroke-width="1.4" stroke-linecap="round" opacity="0.7" />');
+    }
+
+    // labels: solfa/letter + duration name, combined onto one horizontal
+    // line per note (e.g. "Do C · Dotted quaver") so every note always gets
+    // a complete answer, then row-stacked on a fixed strip below the whole
+    // chart — decoupled from each note's own pitch height — so labels never
+    // clash even when several low/high notes' text would otherwise collide.
+    var LABEL_FONT = 9.5, LABEL_ROW_H = 13, LABEL_BASE_Y = h + 14;
+    var labelItems = sounding.map(function(c, ci){
+      var pitchLabel = degreeSolfa(c.degree) + ' ' + degreeLetter(c.degree);
+      var durLabel = c.tripletGroup ? 'Triplet quaver' : noteName(c.u, false);
+      var isContinuation = ci>0 && sounding[ci-1].tie;
+      if(c.tie) durLabel += ' tied →';
+      if(isContinuation) durLabel += ' (tied)';
+      return {
+        cx: xFor(c.start + c.u/2),
+        text: pitchLabel + ' · ' + durLabel,
+        fontSize: LABEL_FONT,
+        pitchLabel: pitchLabel,
+        durLabel: durLabel,
+        isTonic: isTonicDegree(c.degree)
+      };
+    });
+    var labelStack = stackLabelRows(labelItems, 6);
+    labelItems.forEach(function(item, i){
+      var labelY = LABEL_BASE_Y + labelStack.rowIndex[i] * LABEL_ROW_H;
+      var color = item.isTonic ? 'var(--teal-ink)' : 'var(--ink-soft)';
+      var weight = item.isTonic ? '700' : '600';
+      parts.push('<text x="'+item.cx+'" y="'+labelY+'" font-family="IBM Plex Mono, monospace" font-size="'+LABEL_FONT+'" text-anchor="middle"><tspan font-weight="'+weight+'" fill="'+color+'">'+item.pitchLabel+'</tspan><tspan fill="var(--ink-faint)"> · '+item.durLabel+'</tspan></text>');
+    });
+
+    var hasTie = sounding.some(function(c){ return c.tie; });
+    var hasTriplet = sounding.some(function(c){ return c.tripletGroup; });
+    var featureNotes = [];
+    if(hasTie) featureNotes.push('includes a tied note');
+    if(hasTriplet) featureNotes.push('includes a triplet');
+    var svgHeight = Math.max(h + 30, LABEL_BASE_Y + labelStack.rowCount * LABEL_ROW_H + 12);
+    var svg = '<svg width="'+w+'" height="'+svgHeight+'" viewBox="0 0 '+w+' '+svgHeight+'" role="img" aria-label="Melody contour with note durations">'+parts.join('')+'</svg>';
+    container.innerHTML = '<div class="reveal"><div class="meter-tag">' + meterLabel + ' · movable-do, key of C major · pill width = note duration' + (featureNotes.length ? ' · ' + featureNotes.join(' · ') : '') + '</div><div class="contour-wrap">' + svg + '</div></div>';
+  }
+
+  // ---------- Chromatic pitch helpers (for Triad / Cadence, which need true
+  // minor/diminished qualities the diatonic degree system can't express) ----------
+  function freqFromSemitones(semi){ return 261.63 * Math.pow(2, semi/12); }
+  var CHROMATIC_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  function chromaticIndex(semi){ return ((semi % 12) + 12) % 12; }
+  function chromaticOctave(semi){ return Math.floor(semi/12); }
+  function chromaticName(semi){
+    var name = CHROMATIC_NAMES[chromaticIndex(semi)];
+    var oct = chromaticOctave(semi);
+    var mark = oct>0 ? new Array(oct+1).join('′') : (oct<0 ? new Array(-oct+1).join(',') : '');
+    return name + mark;
+  }
+  // Bridge from the diatonic degree system (used by Rhythm/Melody/Pitch) into
+  // semitones, so Pitch-tab answers can share the same stacked-note reveal
+  // that Triad/Cadence use.
+  function degreeToSemi(deg){ return degreeOctave(deg)*12 + SCALE_STEPS[degreeIndex(deg)]; }
+
+  var TRIAD_QUALITY = { major:[0,4,7], minor:[0,3,7], diminished:[0,3,6] };
+  // Returns the three sounding pitches (semitones from middle C), lowest to
+  // highest, for a given root/quality/position (0=root, 1=1st inv, 2=2nd inv).
+  function triadPitches(root, quality, position){
+    var iv = TRIAD_QUALITY[quality];
+    if(position === 1) return [root+iv[1], root+iv[2], root+12];
+    if(position === 2) return [root+iv[2], root+12, root+iv[1]+12];
+    return [root, root+iv[1], root+iv[2]];
+  }
+
+  var ROMAN_TRIADS = {
+    I:  { root:0, quality:'major' },
+    ii: { root:2, quality:'minor' },
+    IV: { root:5, quality:'major' },
+    V:  { root:7, quality:'major' },
+    vi: { root:9, quality:'minor' }
+  };
+  var CADENCE_DEFS = {
+    perfect:     { label: 'Perfect cadence (V–I)',            chords: ['V','I'] },
+    plagal:      { label: 'Plagal cadence (IV–I)',            chords: ['IV','I'] },
+    interrupted: { label: 'Interrupted cadence (V–vi)',       chords: ['V','vi'] },
+    imperfect:   { label: 'Imperfect / half cadence (I–V)',   chords: ['I','V'] }
+  };
+
+  var SCALE_DEGREE_WORDS = ['unison','second','third','fourth','fifth','sixth','seventh','octave'];
+  var MAJOR_INTERVAL_NAMES = ['unison','major second','major third','perfect fourth','perfect fifth','major sixth','major seventh','octave'];
+  var HARMONIC_MINOR_SEMI = [0,2,3,5,7,8,11,12];
+  var HARMONIC_MINOR_NAMES = ['unison','major second','minor third','perfect fourth','perfect fifth','minor sixth','major seventh','octave'];
+
+  // ---------- Generic chordal audio: a small seconds-based scheduler used by
+  // every new test type (Time / Pitch / Triad / Cadence), layered on the same
+  // playTone envelope as Rhythm/Melody so the tone quality matches throughout. ----------
+  function playChordTone(ctx, time, dur, freqs, accent){
+    freqs.forEach(function(f){ playTone(ctx, time, dur, f, accent); });
+  }
+  // events: [{ t: secondsFromStart, dur: seconds, freqs: [..], accent: bool }]
+  function scheduleEvents(ctx, events, startTime){
+    var maxEnd = 0;
+    events.forEach(function(e){
+      playChordTone(ctx, startTime + e.t, e.dur, e.freqs, !!e.accent);
+      maxEnd = Math.max(maxEnd, e.t + e.dur);
+    });
+    return maxEnd;
+  }
+  function animateListeningEvents(indicatorEl, events, ctxStartTime, ctx, totalSec){
+    var dot = indicatorEl.querySelector('.note-dot');
+    var fill = indicatorEl.querySelector('.progress-fill');
+    var delayBase = (ctxStartTime - ctx.currentTime)*1000;
+    events.forEach(function(e){
+      var onAt = Math.max(0, delayBase + e.t*1000);
+      var holdMs = Math.min(160, e.dur*1000*0.6);
+      setTimeout(function(){ dot.classList.add('on'); }, onAt);
+      setTimeout(function(){ dot.classList.remove('on'); }, onAt + holdMs);
+    });
+    if(fill){
+      setTimeout(function(){
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
+        void fill.offsetWidth;
+        fill.style.transition = 'width ' + Math.max(0.05,totalSec).toFixed(2) + 's linear';
+        fill.style.width = '100%';
+      }, Math.max(0, delayBase));
+    }
+  }
+
+  // ---------- Stacked-note reveal: a compact "pitch axis" SVG shared by
+  // Pitch (compare/tonic/interval/two-part), Triad, and Cadence reveals.
+  // Each item in `groups` is one moment in time (a single note, an interval,
+  // or a full chord) rendered as a vertical stack of noteheads at its own x
+  // position, with horizontal (never diagonal) labels beside each note. ----------
+  var STACK_SEMI_PX = 7.5;
+  function renderStackedNotes(container, groups, opts){
+    opts = opts || {};
+    var allPitches = [];
+    groups.forEach(function(g){ g.pitches.forEach(function(p){ allPitches.push(p); }); });
+    var minP = Math.min.apply(null, allPitches), maxP = Math.max.apply(null, allPitches);
+    var padTop = 22, padBottom = 30;
+    var h = (maxP-minP)*STACK_SEMI_PX + padTop + padBottom;
+    var yFor = function(p){ return padTop + (maxP-p)*STACK_SEMI_PX; };
+    var groupGap = 118;
+    // Size the left/right margins to the actual label text so nothing gets
+    // clipped by the SVG viewBox — a fixed padX broke as soon as a group's
+    // bottom label (e.g. "Minor triad · First inversion") got long.
+    var maxBottomLabelHalf = 0, maxSideLabel = 0;
+    groups.forEach(function(g){
+      if(g.label) maxBottomLabelHalf = Math.max(maxBottomLabelHalf, estimateTextWidth(g.label, 10.5)/2);
+      g.pitches.forEach(function(p, idx){
+        var name = (g.noteNames && g.noteNames[idx] != null) ? g.noteNames[idx] : chromaticName(p);
+        maxSideLabel = Math.max(maxSideLabel, estimateTextWidth(String(name), 10.5));
+      });
+    });
+    var padX = Math.max(54, maxBottomLabelHalf + 14);
+    var lastCx = padX + Math.max(0,groups.length-1)*groupGap;
+    var lastLabelHalf = (groups.length && groups[groups.length-1].label) ? estimateTextWidth(groups[groups.length-1].label, 10.5)/2 : 0;
+    var w = Math.max(260, lastCx + Math.max(lastLabelHalf, maxSideLabel + 16) + 16);
+    var parts = [];
+    groups.forEach(function(g, gi){
+      var cx = padX + gi*groupGap;
+      var withIdx = g.pitches.map(function(p, idx){ return { p:p, idx:idx }; }).sort(function(a,b){ return b.p - a.p; });
+      if(withIdx.length > 1){
+        parts.push(svgLine(cx, yFor(withIdx[0].p), cx, yFor(withIdx[withIdx.length-1].p), 1.4, 'var(--line-strong)'));
+      }
+      var labelYs = withIdx.map(function(s){ return yFor(s.p); });
+      for(var i=1;i<labelYs.length;i++){ if(labelYs[i]-labelYs[i-1] < 15) labelYs[i] = labelYs[i-1]+15; }
+      withIdx.forEach(function(s, i){
+        var y = yFor(s.p);
+        var isHi = !!(opts.highlightPredicate && opts.highlightPredicate(g, s.idx, s.p));
+        var dotFill = isHi ? 'var(--rose-ink)' : 'var(--ink)';
+        parts.push('<ellipse cx="'+cx+'" cy="'+y.toFixed(1)+'" rx="6.4" ry="4.6" fill="'+dotFill+'" />');
+        var labelY = labelYs[i] + 3.5;
+        var name = (g.noteNames && g.noteNames[s.idx] != null) ? g.noteNames[s.idx] : chromaticName(s.p);
+        parts.push('<text x="'+(cx+12)+'" y="'+labelY.toFixed(1)+'" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="'+(isHi?'700':'500')+'" fill="'+(isHi?'var(--rose-ink)':'var(--ink-soft)')+'" text-anchor="start">'+name+'</text>');
+      });
+      if(g.label){
+        parts.push('<text x="'+cx+'" y="'+(h-9)+'" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ink-faint)" text-anchor="middle">'+g.label+'</text>');
+      }
+    });
+    var svg = '<svg width="'+w+'" height="'+h.toFixed(1)+'" viewBox="0 0 '+w+' '+h.toFixed(1)+'" role="img" aria-label="Stacked notes">'+parts.join('')+'</svg>';
+    container.innerHTML = '<div class="reveal">' + (opts.meterLabel ? '<div class="meter-tag">'+opts.meterLabel+'</div>' : '') + '<div class="notation-scroll">'+svg+'</div></div>';
+  }
+
+  // ---------- Practice log ----------
+  function todayKey(){ return new Date().toISOString().slice(0,10); }
+  function loadLog(){
+    try{
+      var raw = localStorage.getItem('ameb_aural_log');
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveLog(log){
+    try{ localStorage.setItem('ameb_aural_log', JSON.stringify(log)); }catch(e){}
+  }
+  function logReps(n){
+    var log = loadLog();
+    var k = todayKey();
+    log[k] = (log[k]||0) + n;
+    saveLog(log);
+    renderLog();
+  }
+  function renderLog(){
+    var log = loadLog();
+    var today = log[todayKey()] || 0;
+    var streak = 0;
+    var d = new Date();
+    while(true){
+      var key = d.toISOString().slice(0,10);
+      if(log[key] && log[key] > 0){ streak++; d.setDate(d.getDate()-1); }
+      else break;
+    }
+    var el = document.getElementById('log-text');
+    if(el){ el.innerHTML = 'Today: ' + today + ' listening reps · <span class="streak">streak: ' + streak + ' day' + (streak===1?'':'s') + '</span>'; }
+  }
+  document.getElementById('log-reset').addEventListener('click', function(){
+    try{ localStorage.removeItem('ameb_aural_log'); }catch(e){}
+    renderLog();
+  });
+  renderLog();
+
+  // ---------- Tab wiring ----------
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab + '-panel').classList.add('active');
+    });
+  });
+
+  // ---------- Generic panel controller ----------
+  function setupPanel(prefix, kind){
+    var state = { bars: 2, meter: 'duple', tempo: prefix==='r'?80:76, passage: null };
+
+    var barsSeg = document.getElementById(prefix+'-bars');
+    var meterSeg = document.getElementById(prefix+'-meter');
+    var tempoSlider = document.getElementById(prefix+'-tempo');
+    var tempoVal = document.getElementById(prefix+'-tempo-val');
+    var statusEl = document.getElementById(prefix+'-status');
+    var pulseEl = document.getElementById(prefix+'-pulse');
+    var revealArea = document.getElementById(prefix+'-reveal-area');
+    var newBtn = document.getElementById(prefix+'-new');
+    var playBtn = document.getElementById(prefix+'-play');
+    var chainRowEl = document.getElementById(prefix+'-chain-row');
+    var revealBtn = document.getElementById(prefix+'-reveal');
+
+    function segWire(seg, onSet){
+      seg.querySelectorAll('button').forEach(function(b){
+        b.addEventListener('click', function(){
+          seg.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+          b.classList.add('active');
+          onSet(b.dataset.val);
+        });
+      });
+    }
+    segWire(barsSeg, function(v){ state.bars = parseInt(v,10); });
+    segWire(meterSeg, function(v){ state.meter = v; });
+    tempoSlider.addEventListener('input', function(){
+      state.tempo = parseInt(tempoSlider.value,10);
+      tempoVal.textContent = state.tempo + ' bpm';
+    });
+
+    function effectiveMeter(){
+      if(state.meter !== 'random') return state.meter;
+      var candidates = Array.prototype.slice.call(meterSeg.querySelectorAll('button'))
+        .map(function(b){ return b.dataset.val; })
+        .filter(function(v){ return v !== 'random'; });
+      return pick(candidates);
+    }
+
+    // Plays one passage (or a bars.slice(0,len) sub-passage) twice, with the
+    // listening indicator synced to each playing. Shared by Play Twice and
+    // by each individual Chain Build length button.
+    function playPassageTwice(sub, label){
+      var ctx = ensureAudio();
+      resetIndicator(pulseEl);
+      var t0 = ctx.currentTime + 0.2;
+      var dur1 = schedulePassage(ctx, sub, state.tempo, kind, t0);
+      animateListening(pulseEl, sub, state.tempo, t0, ctx);
+      var gap = (60/state.tempo) * 1.4;
+      var t1 = t0 + dur1 + gap;
+      var dur2 = schedulePassage(ctx, sub, state.tempo, kind, t1);
+      setTimeout(function(){ animateListening(pulseEl, sub, state.tempo, t1, ctx); }, Math.max(0,(t1-ctx.currentTime)*1000) - 5);
+      statusEl.textContent = label + ' — playing twice. Listen, then try it back before moving on.';
+      revealBtn.disabled = false;
+      logReps(1);
+      var totalMs = (t1 - ctx.currentTime + dur2) * 1000;
+      setTimeout(function(){ statusEl.textContent = label + ' done — take your time, then continue when ready.'; }, totalMs);
+    }
+
+    function buildChainRow(){
+      chainRowEl.innerHTML = '';
+      var minLen = Math.min(2, state.bars);
+      for(var len = minLen; len <= state.bars; len++){
+        (function(l){
+          var b = document.createElement('button');
+          b.className = 'chain-btn';
+          b.type = 'button';
+          b.textContent = (l === state.bars) ? ('Full · ' + l + ' bars') : ('Bars 1–' + l);
+          b.addEventListener('click', function(){
+            if(!state.passage) return;
+            b.classList.add('played');
+            var sub = { meterKey: state.passage.meterKey, answer: state.passage.answer, barUnits: state.passage.barUnits, beatGroupUnit: state.passage.beatGroupUnit, bars: state.passage.bars.slice(0, l) };
+            var label = (l === state.bars) ? ('Full passage (' + l + ' bars)') : ('Bars 1–' + l);
+            playPassageTwice(sub, label);
+          });
+          chainRowEl.appendChild(b);
+        })(len);
+      }
+    }
+
+    function newPassage(){
+      var meterKey = effectiveMeter();
+      var passage = generateBars(meterKey, state.bars, currentGrade);
+      addMelodyDegrees(passage, currentGrade); // gives every passage a real (if simple) tune to play, exam-style
+      state.passage = passage;
+      revealBtn.disabled = true;
+      var barWord = state.bars>1?'s':'';
+      if(kind === 'rhythm'){
+        // Meter is deliberately withheld here. Below Grade 3, the official
+        // test only asks the student to reproduce the rhythm — naming duple
+        // or triple isn't required until Grade 3, so the wording adapts.
+        var spec = (typeof GRADE_SPEC !== 'undefined') ? GRADE_SPEC[currentGrade] : null;
+        var stateMeter = !spec || spec.rhythmStateMeter !== false;
+        var task = stateMeter ? 'try to tap or sing it back before revealing. Duple or triple? That\'s for your ear to decide — the reveal will confirm it.' : 'try to tap or sing it back before revealing — just reproduce the rhythm, no need to name duple or triple yet.';
+        revealArea.innerHTML = '<div class="placeholder">Passage ready — ' + state.bars + ' bar' + barWord + '. Press Play Twice, then ' + task + '</div>';
+        statusEl.textContent = 'New passage generated (' + state.bars + ' bars). Ready to play.';
+      } else {
+        var sig = METERS[meterKey].display;
+        revealArea.innerHTML = '<div class="placeholder">Passage ready — ' + state.bars + ' bar' + barWord + ', ' + sig + '. Press Play Twice, then try to sing it back — melody AND time — before revealing.</div>';
+        statusEl.textContent = 'New passage generated (' + state.bars + ' bars, ' + sig + '). Ready to play.';
+      }
+      buildChainRow();
+    }
+
+    function playTwice(){
+      if(!state.passage){ newPassage(); }
+      playPassageTwice(state.passage, 'Full passage');
+    }
+
+    function reveal(){
+      if(!state.passage) return;
+      if(kind === 'rhythm'){ renderRhythmReveal(revealArea, state.passage); }
+      else { renderMelodyReveal(revealArea, state.passage); }
+    }
+
+    newBtn.addEventListener('click', newPassage);
+    playBtn.addEventListener('click', playTwice);
+    revealBtn.addEventListener('click', reveal);
+
+    // initialize first passage silently so the stage has content
+    newPassage();
+
+    // Rhythm's placeholder wording depends on whether the current grade
+    // requires stating duple/triple (Grade 3+) — refresh it on grade change
+    // without discarding whatever passage is already in progress.
+    if(kind === 'rhythm' && typeof gradeRefreshCallbacks !== 'undefined'){
+      gradeRefreshCallbacks.push(function(){
+        if(state.passage){
+          var spec = GRADE_SPEC[currentGrade];
+          var stateMeter = !spec || spec.rhythmStateMeter !== false;
+          var task = stateMeter ? 'Duple or triple? That\'s for your ear to decide.' : 'Just reproduce the rhythm — no need to name duple or triple yet.';
+          statusEl.textContent = 'Grade updated. ' + task + ' Current passage kept — press Play Twice when ready.';
+        }
+      });
+    }
+  }
+
+  // ---------- Grade specification: official AMEB Aural Test Requirements,
+  // Preliminary through Grade 8. Each grade lists exactly the categories
+  // (tabs) active for that grade, in official order, plus the grade-specific
+  // parameters each tab reads (which Pitch sub-tasks, triad qualities, cadence
+  // types, memory length). Simplifications are noted inline where the real
+  // syllabus specifies a nuance this generator approximates. ----------
+  // Wording tracks the AMEB book "Aural Tests: Graded Exercises in Aural Skills"
+  // (2002) test-type headings verbatim, condensed into one grade-note line.
+  var GRADE_SPEC = {
+    prelim: {
+      label: 'Preliminary', categories: ['time','rhythm','pitch'],
+      note: 'Preliminary aural test — Time: clap the beats of a simple chord passage in two- or three-beat time (slow, moderate or quick), and keep clapping or beating after the examiner stops. Rhythm: hum, sing, clap or tap back the note values of a simple two-bar passage. Pitch: sing a five- or six-note phrase of one-beat notes back note by note (the examiner plays it, then repeats it waiting on each note), and state which of two notes played separately — not less than a third apart — is higher or lower.',
+      pitchTasks: ['callResponse','compareSeparate'], rhythmStateMeter: false
+    },
+    '1': {
+      label: 'Grade 1', categories: ['pitch','rhythm','melody'],
+      note: 'Grade 1 aural test — Pitch: hum or sing the tonic at the end of a short unfinished phrase. Rhythm: after the examiner plays a duple- or triple-time passage twice, tap or clap it back (no need to name the time). Melody: hum or sing back a short phrase, played twice, combining melody and time.',
+      pitchTasks: ['tonic'], rhythmStateMeter: false
+    },
+    '2': {
+      label: 'Grade 2', categories: ['rhythm','melody','pitch'],
+      note: 'Grade 2 aural test — Rhythm: after two hearings of a duple- or triple-time passage, tap or clap it back. Melody: hum or sing back a short phrase, played twice, combining melody and time. Pitch: hum or sing the higher or lower of two notes a major 3rd or perfect 5th apart, within an octave from middle C, sounded together.',
+      pitchTasks: ['compareSimultaneous'], rhythmStateMeter: false
+    },
+    '3': {
+      label: 'Grade 3', categories: ['rhythm','melody','pitch'],
+      note: 'Grade 3 aural test — Rhythm: tap or clap back a duple- or triple-time passage (two hearings) and state whether it is duple or triple. Melody: hum or sing back a short phrase, played twice, combining melody and time. Pitch: hum or sing the higher or lower of any two notes within an octave from middle C, sounded together; and, after the examiner sounds a keynote, hum or sing then name the interval (2nd, 3rd, 4th or 5th of the major scale) sounded in succession to it.',
+      pitchTasks: ['compareSimultaneous','intervalNaming']
+    },
+    '4': {
+      label: 'Grade 4', categories: ['rhythm','pitch','triad'],
+      note: 'Grade 4 aural test — Rhythm: tap or clap back a duple- or triple-time passage and state whether it is duple or triple. Pitch: after the examiner sounds a keynote, hum or sing then name any interval of the major scale sounded immediately after it; and hum or sing from memory the higher or lower part of a two-part progression of two successive intervals within an octave from middle C. Triad: hum or sing the middle note of any major or minor triad (root position or inversion) sounded within an octave.',
+      pitchTasks: ['intervalNaming','twoPart'],
+      triadTask: 'middleNote', triadQualities: ['major','minor'], triadInversions: true
+    },
+    '5': {
+      label: 'Grade 5', categories: ['rhythm','pitch','triad'],
+      note: 'Grade 5 aural test — Rhythm: tap or clap back a duple- or triple-time passage and state whether it is duple or triple. Pitch: after the examiner sounds a keynote, hum or sing then name any interval of the major scale sounded immediately after it; and hum or sing from memory the higher or lower part of a two-part progression of three successive intervals within an octave from middle C, played slowly. Triad: hum or sing all three notes of any major or minor triad (root position or inversion), ascending or descending as required.',
+      pitchTasks: ['intervalNaming','twoPart'],
+      triadTask: 'allNotes', triadQualities: ['major','minor'], triadInversions: true
+    },
+    '6': {
+      label: 'Grade 6', categories: ['pitch','triad','cadence'],
+      note: 'Grade 6 aural test — Pitch: after the examiner sounds a keynote, hum or sing then name any interval of the major or harmonic minor scale sounded immediately after it; and hum or sing from memory the higher or lower part of a two-part progression of four successive intervals within an octave from middle C. Triad: recognise the position of any major triad (root position or inversion) sounded within an octave. Cadence: recognise perfect and plagal cadences in a major key as they occur in a short piece, the tonic chord being sounded first.',
+      pitchTasks: ['intervalNaming','twoPart'],
+      triadTask: 'position', triadQualities: ['major'], triadInversions: true,
+      cadenceTypes: ['perfect','plagal']
+    },
+    '7': {
+      label: 'Grade 7', categories: ['triad','cadence','memory','pitch'],
+      note: 'Grade 7 aural test — Triad: recognise any major or minor triad (root position or inversion) and state its position. Cadence: recognise perfect, plagal and interrupted cadences in a major key as they occur in a short piece, the tonic chord being sounded first. Memory: with about one minute to study a two-bar phrase from a printed copy away from the instrument (keynote sounded first), play or sing it from memory. Pitch: hum or sing from memory the higher or lower part of a note-against-note two-part phrase of not more than six notes, within an octave from middle C, played slowly.',
+      pitchTasks: ['twoPart'],
+      triadTask: 'positionQuality', triadQualities: ['major','minor'], triadInversions: true,
+      cadenceTypes: ['perfect','plagal','interrupted'],
+      memoryBars: 2, memorySeconds: 60
+    },
+    '8': {
+      label: 'Grade 8', categories: ['triad','cadence','memory','pitch'],
+      note: 'Grade 8 aural test — Triad: recognise any major or minor triad (root position or inversion), or any diminished triad in root position, stating position for major/minor. Cadence: recognise any of the four principal cadences (perfect, plagal, imperfect, interrupted) in a major key in a short piece, the tonic chord being sounded first. Memory: with about 1½ minutes to study a three- or four-bar phrase from a printed copy away from the instrument (keynote sounded first), play or sing it from memory. Pitch: after the examiner plays a two-part phrase with a few passing notes, hum, sing or play the lower part from memory.',
+      pitchTasks: ['twoPart'],
+      triadTask: 'positionQualityDim', triadQualities: ['major','minor','diminished'], triadInversions: true,
+      cadenceTypes: ['perfect','plagal','interrupted','imperfect'],
+      memoryBars: [3,4], memorySeconds: 90
+    }
+  };
+  var currentGrade = '3';
+  var gradeRefreshCallbacks = [];
+
+  function applyGrade(g){
+    currentGrade = g;
+    var spec = GRADE_SPEC[g];
+    document.querySelectorAll('#grade-row .grade-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.val === g); });
+    document.getElementById('grade-note').textContent = spec.note;
+    var activeSet = {};
+    spec.categories.forEach(function(c){ activeSet[c] = true; });
+    var firstVisibleTab = null;
+    document.querySelectorAll('#tabs-nav .tab-btn').forEach(function(btn){
+      var cat = btn.dataset.tab;
+      var show = !!activeSet[cat];
+      btn.classList.toggle('hidden-grade', !show);
+      if(show && !firstVisibleTab) firstVisibleTab = cat;
+    });
+    var activeBtn = document.querySelector('#tabs-nav .tab-btn.active');
+    if(!activeBtn || activeBtn.classList.contains('hidden-grade')){
+      document.querySelectorAll('#tabs-nav .tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      if(firstVisibleTab){
+        document.querySelector('#tabs-nav .tab-btn[data-tab="'+firstVisibleTab+'"]').classList.add('active');
+        document.getElementById(firstVisibleTab+'-panel').classList.add('active');
+      }
+    }
+    gradeRefreshCallbacks.forEach(function(fn){ fn(); });
+  }
+  document.querySelectorAll('#grade-row .grade-btn').forEach(function(b){
+    b.addEventListener('click', function(){ applyGrade(b.dataset.val); });
+  });
+
+  // ---------- Time panel (Preliminary): clap-the-beat + keep-time drill ----------
+  function setupTimePanel(){
+    var state = { beats: 2, bpm: 88, test: null };
+    var meterSeg = document.getElementById('t-meter');
+    var speedSeg = document.getElementById('t-speed');
+    var statusEl = document.getElementById('t-status');
+    var pulseEl = document.getElementById('t-pulse');
+    var revealArea = document.getElementById('t-reveal-area');
+    var newBtn = document.getElementById('t-new');
+    var playBtn = document.getElementById('t-play');
+    var revealBtn = document.getElementById('t-reveal');
+
+    function segWire(seg, onSet){
+      seg.querySelectorAll('button').forEach(function(b){
+        b.addEventListener('click', function(){
+          seg.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+          b.classList.add('active');
+          onSet(b.dataset.val);
+        });
+      });
+    }
+    segWire(meterSeg, function(v){ state.beats = parseInt(v,10); });
+    segWire(speedSeg, function(v){ state.bpm = parseInt(v,10); });
+
+    function chordFreqs(){ return [degreeFreq(0), degreeFreq(2), degreeFreq(4)]; }
+    function buildEvents(totalBeats, secPerBeat){
+      var events = [];
+      for(var i=0;i<totalBeats;i++){
+        events.push({ t: i*secPerBeat, dur: secPerBeat*0.55, freqs: chordFreqs(), accent: (i % state.beats === 0) });
+      }
+      return events;
+    }
+
+    function newTest(){
+      state.test = { beats: state.beats, bpm: state.bpm, visibleBars: 4, hiddenBars: 4 };
+      revealBtn.disabled = true;
+      revealArea.innerHTML = '<div class="placeholder">Passage ready — ' + state.beats + '-beat time. Press Play, clap along with the chords, then keep clapping steadily after they stop.</div>';
+      statusEl.textContent = 'New passage generated. Ready to play.';
+    }
+
+    function play(){
+      if(!state.test) newTest();
+      var ctx = ensureAudio();
+      resetIndicator(pulseEl);
+      var secPerBeat = 60/state.test.bpm;
+      var visibleBeats = state.test.beats * state.test.visibleBars;
+      var events = buildEvents(visibleBeats, secPerBeat);
+      var t0 = ctx.currentTime + 0.2;
+      var dur = scheduleEvents(ctx, events, t0);
+      animateListeningEvents(pulseEl, events, t0, ctx, dur);
+      statusEl.textContent = 'Playing — clap on every beat. It goes silent after ' + visibleBeats + ' beats; keep clapping in tempo on your own.';
+      revealBtn.disabled = false;
+      logReps(1);
+      setTimeout(function(){ statusEl.textContent = 'Silent now — keep clapping steadily, then press Reveal to check.'; }, Math.max(0,(t0 - ctx.currentTime + dur)*1000));
+    }
+
+    function reveal(){
+      if(!state.test) return;
+      var ctx = ensureAudio();
+      resetIndicator(pulseEl);
+      var secPerBeat = 60/state.test.bpm;
+      var totalBeats = state.test.beats * (state.test.visibleBars + state.test.hiddenBars);
+      var visibleBeats = state.test.beats * state.test.visibleBars;
+      var events = buildEvents(totalBeats, secPerBeat);
+      var t0 = ctx.currentTime + 0.2;
+      var dur = scheduleEvents(ctx, events, t0);
+      animateListeningEvents(pulseEl, events, t0, ctx, dur);
+      revealArea.innerHTML = '<div class="reveal"><div class="meter-tag">' + state.test.beats + '-beat time, ' + state.test.bpm + ' bpm — the pulse now continues straight through all ' + totalBeats + ' beats (the first ' + visibleBeats + ' were the "played" part). Compare it against your own clapping.</div></div>';
+      statusEl.textContent = 'Reveal — full continuous pulse playing now.';
+    }
+
+    newBtn.addEventListener('click', newTest);
+    playBtn.addEventListener('click', play);
+    revealBtn.addEventListener('click', reveal);
+    newTest();
+  }
+
+  // ---------- Pitch panel: multi-task (tonic / echo / compare / interval
+  // naming / two-part), filtered per grade via GRADE_SPEC.pitchTasks ----------
+  var PITCH_TASK_META = {
+    callResponse:        { label: 'Echo Notes' },
+    compareSeparate:     { label: 'Higher or Lower (separate)' },
+    compareSimultaneous: { label: 'Higher or Lower (together)' },
+    tonic:                { label: 'Find the Tonic' },
+    intervalNaming:      { label: 'Name the Interval' },
+    twoPart:              { label: 'Two-Part (sing a line)' }
+  };
+  function setupPitchPanel(){
+    var state = { task: null, tempo: 70, question: null };
+    var taskSeg = document.getElementById('p-task');
+    var tempoSlider = document.getElementById('p-tempo');
+    var tempoVal = document.getElementById('p-tempo-val');
+    var statusEl = document.getElementById('p-status');
+    var pulseEl = document.getElementById('p-pulse');
+    var revealArea = document.getElementById('p-reveal-area');
+    var newBtn = document.getElementById('p-new');
+    var playBtn = document.getElementById('p-play');
+    var revealBtn = document.getElementById('p-reveal');
+
+    tempoSlider.addEventListener('input', function(){
+      state.tempo = parseInt(tempoSlider.value,10);
+      tempoVal.textContent = state.tempo + ' bpm';
+    });
+
+    // Compare pitches are chosen in SEMITONES from middle C (chromatic), not
+    // movable-do degrees — the book says "any two notes within the limits of an
+    // octave from middle C", so both notes must be free to sit anywhere across
+    // C4–C5 (and, for the Preliminary "played separately" test, a little wider).
+    // `intervalChoices` is a list of allowed gaps in semitones; `spanSemis` is
+    // how far above middle C the pair may reach.
+    function genCompareSemis(simultaneous, intervalChoices, spanSemis){
+      var interval = pick(intervalChoices);
+      var maxBase = Math.max(0, spanSemis - interval);
+      var base = Math.floor(Math.random()*(maxBase+1));
+      var lo = base, hi = base + interval;
+      var order = Math.random()<0.5 ? [lo,hi] : [hi,lo];
+      return { kind:'compare', simultaneous: simultaneous, loSemi: lo, hiSemi: hi, playOrder: order };
+    }
+    var COMPARE_ANY_INTERVALS = [2,3,4,5,6,7,8,9,10,11,12];   // Grade 3: "any two notes"
+    var COMPARE_SEPARATE_INTERVALS = [3,4,5,6,7,8,9,10,11,12]; // Preliminary: "not less than a third apart"
+    function genTonic(){
+      var start = pick([2,3,4]);
+      var mid = clamp(start + (Math.random()<0.5?-1:1), 1, 5);
+      return { kind:'tonic', seq: [start, mid, 1] };
+    }
+    function genCallResponse(){
+      var n = Math.random()<0.5?5:6;
+      var seq = [pick([0,2,4])];
+      for(var i=1;i<n;i++){
+        var r = Math.random();
+        var step = r<0.55 ? (Math.random()<0.5?-1:1) : (r<0.85 ? (Math.random()<0.5?-2:2) : 0);
+        seq.push(clamp(seq[i-1]+step, 0, 7));
+      }
+      return { kind:'callResponse', seq: seq };
+    }
+    function genIntervalNaming(terminology){
+      var useMinor = terminology === 'majorOrHarmonicMinor' && Math.random() < 0.5;
+      var maxOffset = terminology === 'scaleDegree' ? 4 : 7;
+      var offset = 1 + Math.floor(Math.random()*maxOffset);
+      var intervalSemi, label, scaleType;
+      if(useMinor){
+        intervalSemi = HARMONIC_MINOR_SEMI[offset];
+        label = HARMONIC_MINOR_NAMES[offset];
+        scaleType = 'harmonic minor scale';
+      } else {
+        intervalSemi = degreeToSemi(offset);
+        label = (terminology === 'scaleDegree') ? SCALE_DEGREE_WORDS[offset] : MAJOR_INTERVAL_NAMES[offset];
+        scaleType = 'major scale';
+      }
+      // Book: the keynote "having sounded ... a note to be regarded as the keynote"
+      // is played on any pitch, then the interval note follows "in succession".
+      // Both must stay within an octave from middle C — so the keynote roams
+      // 0..(12 - intervalSemi) semitones above middle C rather than being pinned
+      // to middle C itself.
+      var keynoteSemi = Math.floor(Math.random()*(12 - intervalSemi + 1));
+      var targetSemi = keynoteSemi + intervalSemi;
+      return {
+        kind:'interval', keynoteSemi: keynoteSemi, targetSemi: targetSemi,
+        keynoteFreq: freqFromSemitones(keynoteSemi), targetFreq: freqFromSemitones(targetSemi),
+        offset: offset, label: label, scaleType: scaleType, useMinor: useMinor
+      };
+    }
+    function genTwoPart(grade){
+      // Book: G4 = a two-part progression of TWO successive intervals; G5 = THREE
+      // (played slowly); G6 = FOUR; G7 = a note-against-note phrase of NOT MORE
+      // THAN SIX notes (played slowly); G8 = a two-part phrase with a few passing
+      // notes — sing the LOWER part.
+      var cfgMap = { '4':{n:2}, '5':{n:3,slow:true}, '6':{n:4}, '7':{n:6,slow:true}, '8':{n:6,passing:true,slow:true,forceLower:true} };
+      var cfg = cfgMap[grade] || {n:2};
+      var n = cfg.n;
+      var lower = [pick([0,2])];
+      var upper = [lower[0] + pick([2,3,4])];
+      for(var i=1;i<n;i++){
+        var nextLower = clamp(lower[i-1] + pick([-1,0,1,1,-1]), 0, 4);
+        lower.push(nextLower);
+        upper.push(clamp(nextLower + pick([2,3,4]), 2, 7));
+      }
+      lower[n-1] = 0; upper[n-1] = pick([4,7]);
+      var which = cfg.forceLower ? 'lower' : pick(['higher','lower']);
+      return { kind:'twoPart', lower: lower, upper: upper, which: which, passing: !!cfg.passing, slow: !!cfg.slow };
+    }
+
+    function genForTask(){
+      switch(state.task){
+        case 'callResponse': return genCallResponse();
+        case 'compareSeparate': return genCompareSemis(false, COMPARE_SEPARATE_INTERVALS, 17);
+        case 'compareSimultaneous':
+          return currentGrade === '2' ? genCompareSemis(true, [4,7], 12) : genCompareSemis(true, COMPARE_ANY_INTERVALS, 12);
+        case 'tonic': return genTonic();
+        case 'intervalNaming':
+          var terminology = currentGrade === '3' ? 'scaleDegree' : (currentGrade === '6' ? 'majorOrHarmonicMinor' : 'majorScale');
+          return genIntervalNaming(terminology);
+        case 'twoPart': return genTwoPart(currentGrade);
+        default: return genCompareFromRange(true, 1, 7);
+      }
+    }
+
+    function taskStatusPlayingText(q){
+      switch(q.kind){
+        case 'compare': return q.simultaneous ? 'Playing both notes together — which is higher, which is lower?' : 'Playing two notes separately — which was higher, which was lower?';
+        case 'tonic': return 'Playing the unfinished phrase — sing the tonic (Do) to complete it.';
+        case 'callResponse': return 'Playing the phrase note by note — echo each note back.';
+        case 'interval': return 'Keynote, then the interval note — sing it back and name the interval.';
+        case 'twoPart': return 'Playing both parts together — sing the requested part back from memory.';
+      }
+      return 'Playing — listen and respond.';
+    }
+
+    function newQuestion(){
+      state.question = genForTask();
+      revealBtn.disabled = true;
+      var label = PITCH_TASK_META[state.task] ? PITCH_TASK_META[state.task].label : 'Pitch';
+      revealArea.innerHTML = '<div class="placeholder">Question ready (' + label + '). Press Play, respond out loud, then check the reveal.</div>';
+      statusEl.textContent = 'New question ready (' + label + ').';
+    }
+
+    function playQuestion(){
+      if(!state.question) newQuestion();
+      var q = state.question;
+      var ctx = ensureAudio();
+      resetIndicator(pulseEl);
+      var secPerBeat = 60/state.tempo;
+      var events = [];
+      if(q.kind === 'compare'){
+        if(q.simultaneous){
+          events.push({ t:0, dur: secPerBeat*1.6, freqs: [freqFromSemitones(q.loSemi), freqFromSemitones(q.hiSemi)] });
+        } else {
+          events.push({ t:0, dur: secPerBeat*0.85, freqs: [freqFromSemitones(q.playOrder[0])] });
+          events.push({ t: secPerBeat*1.1, dur: secPerBeat*0.85, freqs: [freqFromSemitones(q.playOrder[1])] });
+        }
+      } else if(q.kind === 'tonic'){
+        q.seq.forEach(function(d,i){ events.push({ t:i*secPerBeat, dur:secPerBeat*0.85, freqs:[degreeFreq(d)], accent:i===0 }); });
+      } else if(q.kind === 'callResponse'){
+        q.seq.forEach(function(d,i){ events.push({ t:i*secPerBeat*1.15, dur:secPerBeat*0.8, freqs:[degreeFreq(d)] }); });
+      } else if(q.kind === 'interval'){
+        events.push({ t:0, dur:secPerBeat*0.9, freqs:[q.keynoteFreq], accent:true });
+        events.push({ t:secPerBeat*1.3, dur:secPerBeat*0.9, freqs:[q.targetFreq] });
+      } else if(q.kind === 'twoPart'){
+        var n = q.lower.length;
+        var slowMul = q.slow ? 1.5 : 1;   // book: G5 & G7 two-part tests are "played slowly"
+        for(var i=0;i<n;i++){
+          events.push({ t:i*secPerBeat*1.05*slowMul, dur:secPerBeat*0.9*slowMul, freqs:[degreeFreq(q.lower[i]), degreeFreq(q.upper[i])], accent:i===0 });
+        }
+      }
+      var t0 = ctx.currentTime + 0.2;
+      var dur = scheduleEvents(ctx, events, t0);
+      animateListeningEvents(pulseEl, events, t0, ctx, dur);
+      statusEl.textContent = taskStatusPlayingText(q);
+      revealBtn.disabled = false;
+      logReps(1);
+    }
+
+    function reveal(){
+      if(!state.question) return;
+      var q = state.question;
+      if(q.kind === 'compare'){
+        var loN = chromaticName(q.loSemi), hiN = chromaticName(q.hiSemi);
+        renderStackedNotes(revealArea, [{ pitches:[q.loSemi, q.hiSemi], noteNames:[loN + ' (lower)', hiN + ' (higher)'] }], {
+          meterLabel: 'Higher: ' + hiN + ' · Lower: ' + loN +
+            (q.simultaneous ? ' — played together, within an octave from middle C' : ' — played separately, not less than a third apart')
+        });
+      } else if(q.kind === 'tonic'){
+        var groups = q.seq.map(function(d){ return { pitches:[degreeToSemi(d)], noteNames:[degreeSolfa(d)+' '+degreeLetter(d)] }; });
+        groups.push({ pitches:[degreeToSemi(0)], noteNames:['Do C (tonic — the answer)'] });
+        renderStackedNotes(revealArea, groups, { meterLabel: 'Unfinished phrase, resolving to the tonic Do C.' });
+      } else if(q.kind === 'callResponse'){
+        var groups2 = q.seq.map(function(d){ return { pitches:[degreeToSemi(d)], noteNames:[degreeSolfa(d)+' '+degreeLetter(d)] }; });
+        renderStackedNotes(revealArea, groups2, { meterLabel: q.seq.length + '-note phrase, one beat each.' });
+      } else if(q.kind === 'interval'){
+        renderStackedNotes(revealArea, [{ pitches:[q.keynoteSemi, q.targetSemi], noteNames:['Keynote — ' + chromaticName(q.keynoteSemi), q.label + ' — ' + chromaticName(q.targetSemi)] }], {
+          meterLabel: 'Keynote ' + chromaticName(q.keynoteSemi) + ', then the ' + q.label + ' of the ' + q.scaleType + ' in succession.'
+        });
+      } else if(q.kind === 'twoPart'){
+        var groups3 = q.lower.map(function(d,i){
+          return { pitches:[degreeToSemi(d), degreeToSemi(q.upper[i])], noteNames:[degreeSolfa(d)+' '+degreeLetter(d), degreeSolfa(q.upper[i])+' '+degreeLetter(q.upper[i])] };
+        });
+        renderStackedNotes(revealArea, groups3, {
+          meterLabel: 'Two-part progression — sing the ' + q.which + ' part from memory.',
+          highlightPredicate: function(g, idx){
+            return (q.which==='lower' && idx===0) || (q.which==='higher' && idx===1);
+          }
+        });
+      }
+    }
+
+    function refreshTasks(){
+      var spec = GRADE_SPEC[currentGrade];
+      var tasks = spec.pitchTasks || ['compareSimultaneous'];
+      taskSeg.innerHTML = '';
+      tasks.forEach(function(t, i){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.dataset.val = t;
+        b.textContent = PITCH_TASK_META[t].label;
+        if(i===0) b.classList.add('active');
+        b.addEventListener('click', function(){
+          taskSeg.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+          b.classList.add('active');
+          state.task = t;
+          newQuestion();
+        });
+        taskSeg.appendChild(b);
+      });
+      state.task = tasks[0];
+      newQuestion();
+    }
+
+    newBtn.addEventListener('click', newQuestion);
+    playBtn.addEventListener('click', playQuestion);
+    revealBtn.addEventListener('click', reveal);
+    refreshTasks();
+    gradeRefreshCallbacks.push(refreshTasks);
+  }
+
+  // ---------- Triad panel (Grade 4+) ----------
+  function setupTriadPanel(){
+    var state = { tempo: 70, triad: null };
+    var tempoSlider = document.getElementById('tr-tempo');
+    var tempoVal = document.getElementById('tr-tempo-val');
+    var statusEl = document.getElementById('tr-status');
+    var pulseEl = document.getElementById('tr-pulse');
+    var revealArea = document.getElementById('tr-reveal-area');
+    var newBtn = document.getElementById('tr-new');
+    var playBtn = document.getElementById('tr-play');
+    var revealBtn = document.getElementById('tr-reveal');
+
+    tempoSlider.addEventListener('input', function(){ state.tempo=parseInt(tempoSlider.value,10); tempoVal.textContent=state.tempo+' bpm'; });
+
+    var POSITION_NAMES = ['Root position','First inversion','Second inversion'];
+    var TASK_TEXT = {
+      middleNote: 'Sing the middle note of the triad.',
+      allNotes: 'Sing all three notes, ascending or descending.',
+      position: 'State the position: root, first, or second inversion.',
+      positionQuality: 'State the triad (major/minor) and its position.',
+      positionQualityDim: 'State the triad (major/minor/diminished) and, for major/minor, its position.'
+    };
+
+    function newTriad(){
+      var spec = GRADE_SPEC[currentGrade];
+      var qualities = spec.triadQualities || ['major','minor'];
+      var quality = pick(qualities);
+      var allowInv = spec.triadInversions !== false && quality !== 'diminished';
+      var position = allowInv ? Math.floor(Math.random()*3) : 0;
+      // The real exam book uses triads rooted on every pitch class, not just
+      // the white notes — broadened from a diatonic-only root pool to match.
+      var root = Math.floor(Math.random()*12);
+      var pitches = triadPitches(root, quality, position);
+      // Keep the whole voicing in a comfortable register near middle C —
+      // a high root + 2nd inversion could otherwise drift up two octaves.
+      while(Math.max.apply(null, pitches) > 19){ pitches = pitches.map(function(p){ return p-12; }); }
+      state.triad = { quality: quality, position: position, pitches: pitches, task: spec.triadTask || 'middleNote' };
+      revealBtn.disabled = true;
+      revealArea.innerHTML = '<div class="placeholder">Triad ready. Press Play, then respond, then check the reveal.</div>';
+      statusEl.textContent = 'New triad generated.';
+    }
+
+    function play(){
+      if(!state.triad) newTriad();
+      var ctx = ensureAudio();
+      resetIndicator(pulseEl);
+      var freqs = state.triad.pitches.map(freqFromSemitones);
+      var events = [{ t:0, dur: 1.6, freqs: freqs, accent:true }];
+      var t0 = ctx.currentTime + 0.2;
+      var dur = scheduleEvents(ctx, events, t0);
+      animateListeningEvents(pulseEl, events, t0, ctx, dur);
+      statusEl.textContent = 'Playing the triad — ' + (TASK_TEXT[state.triad.task] || '');
+      revealBtn.disabled = false;
+      logReps(1);
+    }
+
+    function reveal(){
+      if(!state.triad) return;
+      var t = state.triad;
+      var sortedAsc = t.pitches.slice().sort(function(a,b){ return a-b; });
+      var middle = sortedAsc[1];
+      var qualityLabel = t.quality.charAt(0).toUpperCase()+t.quality.slice(1);
+      renderStackedNotes(revealArea, [{ pitches: t.pitches, label: qualityLabel+' triad · '+POSITION_NAMES[t.position] }], {
+        meterLabel: POSITION_NAMES[t.position] + ' ' + t.quality + ' triad' + (t.task==='middleNote' ? ' — middle note highlighted' : ''),
+        highlightPredicate: function(g, idx, p){ return t.task==='middleNote' && p===middle; }
+      });
+    }
+
+    newBtn.addEventListener('click', newTriad);
+    playBtn.addEventListener('click', play);
+    revealBtn.addEventListener('click', reveal);
+    newTriad();
+    gradeRefreshCallbacks.push(newTriad);
+  }
+
+  // ---------- Cadence panel (Grade 6+) ----------
+  function setupCadencePanel(){
+    var state = { tempo: 66, prog: null };
+    var tempoSlider = document.getElementById('c-tempo');
+    var tempoVal = document.getElementById('c-tempo-val');
+    var statusEl = document.getElementById('c-status');
+    var pulseEl = document.getElementById('c-pulse');
+    var revealArea = document.getElementById('c-reveal-area');
+    var newBtn = document.getElementById('c-new');
+    var playBtn = document.getElementById('c-play');
+    var revealBtn = document.getElementById('c-reveal');
+
+    tempoSlider.addEventListener('input', function(){ state.tempo=parseInt(tempoSlider.value,10); tempoVal.textContent=state.tempo+' bpm'; });
+
+    function chordPitches(roman){
+      var t = ROMAN_TRIADS[roman];
+      return triadPitches(t.root, t.quality, 0);
+    }
+
+    function newProg(){
+      var spec = GRADE_SPEC[currentGrade];
+      var types = spec.cadenceTypes || ['perfect','plagal'];
+      var type = pick(types);
+      var def = CADENCE_DEFS[type];
+      // The exam book's cadence excerpts are short chorale-style progressions
+      // of several chords, not just tonic-plus-one — vary the harmonic path
+      // leading into the cadence a bit more.
+      var fillerOptions = [['IV'], ['ii'], ['vi'], ['IV','V'], ['ii','V'], ['IV','ii']];
+      var filler = pick(fillerOptions);
+      state.prog = { type: type, romanSeq: ['I'].concat(filler, def.chords) };
+      revealBtn.disabled = true;
+      revealArea.innerHTML = '<div class="placeholder">Progression ready. Press Play, name the cadence, then check the reveal.</div>';
+      statusEl.textContent = 'New progression generated.';
+    }
+
+    function play(){
+      if(!state.prog) newProg();
+      var ctx = ensureAudio();
+      resetIndicator(pulseEl);
+      var secPerChord = (60/state.tempo) * 1.6;
+      var events = [{ t:0, dur: secPerChord*0.8, freqs: chordPitches('I').map(freqFromSemitones), accent:true }];
+      var gap = secPerChord*1.3;
+      state.prog.romanSeq.forEach(function(roman, i){
+        events.push({ t: gap + i*secPerChord, dur: secPerChord*0.85, freqs: chordPitches(roman).map(freqFromSemitones), accent:(i===0) });
+      });
+      var t0 = ctx.currentTime + 0.2;
+      var dur = scheduleEvents(ctx, events, t0);
+      animateListeningEvents(pulseEl, events, t0, ctx, dur);
+      statusEl.textContent = 'Playing — tonic first, then the short progression. Name the cadence at the end.';
+      revealBtn.disabled = false;
+      logReps(1);
+    }
+
+    function reveal(){
+      if(!state.prog) return;
+      var def = CADENCE_DEFS[state.prog.type];
+      var groups = state.prog.romanSeq.map(function(roman){ return { pitches: chordPitches(roman), label: roman }; });
+      renderStackedNotes(revealArea, groups, { meterLabel: def.label });
+    }
+
+    newBtn.addEventListener('click', newProg);
+    playBtn.addEventListener('click', play);
+    revealBtn.addEventListener('click', reveal);
+    newProg();
+    gradeRefreshCallbacks.push(newProg);
+  }
+
+  // ---------- Memory panel (Grade 7+): study printed notation, then recall ----------
+  function setupMemoryPanel(){
+    var state = { passage: null, timerId: null };
+    var statusEl = document.getElementById('me-status');
+    var revealArea = document.getElementById('me-reveal-area');
+    var newBtn = document.getElementById('me-new');
+    var startBtn = document.getElementById('me-start');
+    var revealBtn = document.getElementById('me-reveal');
+    var countdownEl = document.getElementById('me-countdown');
+    var trackEl = document.getElementById('me-countdown-track');
+    var fillEl = document.getElementById('me-countdown-fill');
+
+    function newPhrase(){
+      if(state.timerId){ clearInterval(state.timerId); state.timerId = null; }
+      var spec = GRADE_SPEC[currentGrade];
+      var barsSpec = spec.memoryBars || 2;
+      var bars = Array.isArray(barsSpec) ? pick(barsSpec) : barsSpec;
+      // The real exam book's Memory phrases appear in every meter (3/4, 6/8,
+      // 4/4, 2/4), not only simple duple time — match that variety.
+      var meterKey = pick(['duple','triple','common','compound']);
+      var passage = generateBars(meterKey, bars, currentGrade);
+      addMelodyDegrees(passage, currentGrade);
+      state.passage = passage;
+      startBtn.disabled = false;
+      revealBtn.disabled = true;
+      countdownEl.style.display = 'none';
+      trackEl.style.display = 'none';
+      revealArea.innerHTML = '<div class="placeholder">Phrase ready (' + bars + ' bar' + (bars>1?'s':'') + '). Press "Sound Keynote &amp; Start Memorising" to begin the timed study window.</div>';
+      statusEl.textContent = 'New phrase generated.';
+    }
+
+    function hideScore(){
+      revealArea.innerHTML = '<div class="placeholder">Time’s up — notation hidden. Try to play or sing the phrase from memory now, then press Reveal to check.</div>';
+      statusEl.textContent = 'Now play or sing it from memory.';
+      revealBtn.disabled = false;
+    }
+
+    function startMemorise(){
+      if(!state.passage) return;
+      var ctx = ensureAudio();
+      playTone(ctx, ctx.currentTime+0.1, 1.1, degreeFreq(0), true); // examiner sounds only the keynote
+      startBtn.disabled = true;
+      revealBtn.disabled = true;
+      var spec = GRADE_SPEC[currentGrade];
+      var seconds = spec.memorySeconds || 60;
+      renderMelodyReveal(revealArea, state.passage);
+      var scoreEl = revealArea.querySelector('.reveal');
+      if(scoreEl) scoreEl.classList.add('memorize-score');
+      countdownEl.style.display = 'block';
+      trackEl.style.display = 'block';
+      var remaining = seconds;
+      var mm0 = Math.floor(remaining/60), ss0 = remaining%60;
+      countdownEl.textContent = mm0 + ':' + (ss0<10?'0':'') + ss0;
+      statusEl.textContent = 'Memorising — study the notation below.';
+      fillEl.style.transition = 'none';
+      fillEl.style.width = '0%';
+      void fillEl.offsetWidth;
+      fillEl.style.transition = 'width ' + seconds + 's linear';
+      fillEl.style.width = '100%';
+      state.timerId = setInterval(function(){
+        remaining--;
+        var m = Math.floor(remaining/60), s = remaining%60;
+        countdownEl.textContent = m + ':' + (s<10?'0':'') + s;
+        if(remaining<=0){
+          clearInterval(state.timerId);
+          state.timerId = null;
+          hideScore();
+        }
+      }, 1000);
+    }
+
+    function revealAnswer(){
+      if(!state.passage) return;
+      if(state.timerId){ clearInterval(state.timerId); state.timerId = null; }
+      countdownEl.style.display = 'none';
+      trackEl.style.display = 'none';
+      renderMelodyReveal(revealArea, state.passage);
+      var ctx = ensureAudio();
+      schedulePassage(ctx, state.passage, 66, 'melody', ctx.currentTime+0.2);
+      statusEl.textContent = 'Reveal — notation shown and phrase played back.';
+    }
+
+    newBtn.addEventListener('click', newPhrase);
+    startBtn.addEventListener('click', startMemorise);
+    revealBtn.addEventListener('click', revealAnswer);
+    newPhrase();
+    gradeRefreshCallbacks.push(newPhrase);
+  }
+
+  setupPanel('r', 'rhythm');
+  setupPanel('m', 'melody');
+  setupTimePanel();
+  setupPitchPanel();
+  setupTriadPanel();
+  setupCadencePanel();
+  setupMemoryPanel();
+  applyGrade('3');
+
+})();
+</script>
+
+</body>
+</html>
