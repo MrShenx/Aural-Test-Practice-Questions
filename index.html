@@ -906,11 +906,100 @@
   })();
 
   // ---------- Audio engine ----------
-  var audioCtx = null, noiseBuffer = null;
+  // Every tone/click/thump routes through a single shared masterGain rather
+  // than straight to ctx.destination. That gives us one place to silence
+  // everything already scheduled: stopAllAudio() zeroes the current gain node
+  // and swaps in a fresh one, so a new Play press (or two rapid presses of
+  // the same button) can never stack on top of whatever was already sounding.
+  // Melodic tones also get a light send into a shared reverb bus for a bit of
+  // room warmth; that bus is rebuilt alongside masterGain so a reverb tail
+  // from a previous press can never linger through a new one.
+  var audioCtx = null, noiseBuffer = null, reverbImpulseBuffer = null;
+  var masterGain = null, reverbSend = null;
+  // Bumped by stopAllAudio() every time a new play/reveal action starts.
+  // Any setTimeout that only makes sense for the playback it was scheduled
+  // under (a dot flash, a progress-bar restart, a "done" status message)
+  // captures the token via guardedTimeout() and simply no-ops if a newer
+  // action has since begun — otherwise stale timers from an old press keep
+  // firing after a new one has already taken over the same indicator.
+  var playGen = 0;
+  function guardedTimeout(fn, delay){
+    var gen = playGen;
+    return setTimeout(function(){ if(playGen === gen) fn(); }, delay);
+  }
+
+  function getReverbImpulseBuffer(ctx){
+    if(reverbImpulseBuffer) return reverbImpulseBuffer;
+    var duration = 1.4, decay = 2.4, rate = ctx.sampleRate, length = Math.floor(rate*duration);
+    var buf = ctx.createBuffer(2, length, rate);
+    for(var ch=0; ch<2; ch++){
+      var data = buf.getChannelData(ch);
+      for(var i=0;i<length;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/length, decay); }
+    }
+    reverbImpulseBuffer = buf;
+    return buf;
+  }
+  // (Re)builds the output chain: masterGain -> destination, plus a small
+  // convolution-reverb bus (reverbSend -> convolver -> return -> masterGain)
+  // that notes can tap into. Called on first use and again every time
+  // stopAllAudio() throws the old chain away, so nothing — dry or wet — can
+  // survive from one press into the next.
+  function connectMasterChain(){
+    masterGain = audioCtx.createGain();
+    masterGain.connect(audioCtx.destination);
+    var convolver = audioCtx.createConvolver();
+    convolver.buffer = getReverbImpulseBuffer(audioCtx);
+    // Darken the reverb tail itself — a bright, full-spectrum noise tail reads
+    // as hiss/metal; rolling the top off makes the room feel warmer and more
+    // like a wooden cabinet than a plate.
+    var reverbFilter = audioCtx.createBiquadFilter();
+    reverbFilter.type = 'lowpass';
+    reverbFilter.frequency.value = 3600;
+    reverbFilter.Q.value = 0.3;
+    var reverbReturn = audioCtx.createGain();
+    reverbReturn.gain.value = 0.55;
+    convolver.connect(reverbFilter);
+    reverbFilter.connect(reverbReturn);
+    reverbReturn.connect(masterGain);
+    reverbSend = audioCtx.createGain();
+    reverbSend.gain.value = 1;
+    reverbSend.connect(convolver);
+  }
   function ensureAudio(){
-    if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+    if(!audioCtx){
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      connectMasterChain();
+    }
     if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
     return audioCtx;
+  }
+  // Call at the start of every "play"/"reveal" action that schedules new
+  // audio — cuts anything still ringing from a previous press so overlapping
+  // clicks can't pile up into an unstoppable wall of sound.
+  function stopAllAudio(){
+    playGen++;
+    if(!audioCtx || !masterGain) return;
+    try{
+      var now = audioCtx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(0, now);
+    }catch(e){}
+    try{ masterGain.disconnect(); }catch(e){}
+    try{ reverbSend.disconnect(); }catch(e){}
+    connectMasterChain();
+  }
+  // Called whenever the visible tab or grade changes — stops any in-flight
+  // audio and snaps every panel's listening indicator back to neutral, so
+  // navigating away from whatever is currently playing doesn't leave it
+  // running (or its dot/progress-bar frozen mid-animation) behind the scenes.
+  function stopPlaybackAndIndicators(){
+    stopAllAudio();
+    document.querySelectorAll('.listen-indicator').forEach(function(el){
+      var dot = el.querySelector('.note-dot');
+      var fill = el.querySelector('.progress-fill');
+      if(dot) dot.classList.remove('on');
+      if(fill){ fill.style.transition = 'none'; fill.style.width = '0%'; }
+    });
   }
   function getNoiseBuffer(ctx){
     if(noiseBuffer) return noiseBuffer;
@@ -930,41 +1019,122 @@
     var gain = ctx.createGain();
     gain.gain.setValueAtTime(accent?0.95:0.55, time);
     gain.gain.exponentialRampToValueAtTime(0.001, time+0.1);
-    src.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
+    src.connect(bp); bp.connect(gain); gain.connect(masterGain);
     src.start(time); src.stop(time+0.12);
   }
+  // A warm, rounded grand-piano-ish tone rather than a flat synth pad: two
+  // gently detuned triangle oscillators (a touch of chorus/width, like a
+  // piano's per-note unison strings) with a plain sine mixed underneath to
+  // thicken the fundamental without adding edge, and a quiet, softened
+  // octave-up sine for shimmer. Everything passes through a lowpass filter
+  // that opens only a little on attack and dulls quickly (a rounder, less
+  // metallic top end) plus a small low-mid presence lift for body/woodiness.
+  // Decay is a natural exponential curve rather than a held plateau, and a
+  // light, darkened reverb send adds room warmth without smearing the rhythm.
   function playTone(ctx, time, dur, freq, accent){
-    var osc = ctx.createOscillator();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(freq, time);
-    var gain = ctx.createGain();
-    // Wide gain gap (not just louder, but a crisper, faster-arriving attack)
-    // so the downbeat is unmistakable — otherwise every meter sounds identical.
-    var peak = accent ? 0.62 : 0.32;
-    var atk = accent ? 0.006 : 0.016;
-    var rel = Math.min(0.09, dur*0.35);
-    gain.gain.setValueAtTime(0, time);
-    gain.gain.linearRampToValueAtTime(peak, time+atk);
-    gain.gain.setValueAtTime(peak, time+Math.max(atk, dur-rel));
-    gain.gain.linearRampToValueAtTime(0.0001, time+dur);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(time); osc.stop(time+dur+0.03);
+    var peak = accent ? 0.5 : 0.27;
+    var atk = accent ? 0.006 : 0.015;
+    var tail = dur + 0.6;
+
+    var filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.Q.value = 0.3;
+    filter.frequency.setValueAtTime(Math.min(6800, freq*7.5), time);
+    filter.frequency.exponentialRampToValueAtTime(Math.max(freq*1.8, 480), time + dur + 0.4);
+
+    // Gentle low-mid lift — the classic "add warmth" EQ move, standing in
+    // for a grand's woody body resonance.
+    var warmth = ctx.createBiquadFilter();
+    warmth.type = 'peaking';
+    warmth.frequency.value = 320;
+    warmth.Q.value = 0.8;
+    warmth.gain.value = 3.5;
+
+    var voiceGain = ctx.createGain();
+    voiceGain.gain.setValueAtTime(0, time);
+    voiceGain.gain.linearRampToValueAtTime(peak, time + atk);
+    // decay toward ~24% of peak over roughly the note's own length (struck
+    // character), then fall away shortly after the notated duration ends
+    voiceGain.gain.setTargetAtTime(Math.max(0.0001, peak*0.24), time + atk, Math.max(0.06, dur*0.55));
+    voiceGain.gain.setTargetAtTime(0.0001, time + dur, 0.13);
+
+    [-3.5, 3.5].forEach(function(cents){
+      var osc = ctx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, time);
+      osc.detune.setValueAtTime(cents, time);
+      osc.connect(filter);
+      osc.start(time); osc.stop(time + tail);
+    });
+    // A pure sine at the fundamental, mixed in underneath — most of the
+    // actual "warmth" difference comes from this: it reinforces the root
+    // with no harshness at all, rounding out the triangle waves' edge.
+    var body = ctx.createOscillator();
+    body.type = 'sine';
+    body.frequency.setValueAtTime(freq, time);
+    var bodyGain = ctx.createGain();
+    bodyGain.gain.value = 0.45;
+    body.connect(bodyGain); bodyGain.connect(filter);
+    body.start(time); body.stop(time + tail);
+
+    var shimmer = ctx.createOscillator();
+    shimmer.type = 'sine';
+    shimmer.frequency.setValueAtTime(freq*2, time);
+    var shimmerGain = ctx.createGain();
+    shimmerGain.gain.value = accent ? 0.06 : 0.035;
+    shimmer.connect(shimmerGain); shimmerGain.connect(filter);
+    shimmer.start(time); shimmer.stop(time + tail);
+
+    filter.connect(warmth);
+    warmth.connect(voiceGain);
+    voiceGain.connect(masterGain);
+    voiceGain.connect(reverbSend);
   }
   // A soft low "thump" layered under every downbeat — like a felt conductor's
   // beat rather than a click. This is what actually makes duple vs. triple
   // vs. common vs. compound distinguishable by ear: the thump recurs every
   // 2, 3, 4, or 2-dotted-crotchet beats depending on the meter.
+  //
+  // A pure sub-80Hz sine barely reproduces on phone/laptop speakers and sits
+  // right where the ear is least sensitive at low volume — so on its own it
+  // all but disappears when played quietly. Pitching the sweep a little
+  // higher, adding a quiet upper-octave partner (something small speakers can
+  // actually push out even when the fundamental gets filtered away), and a
+  // very brief low click for attack definition make the beat easier to feel
+  // without raising the overall level much.
   function playDownbeatThump(ctx, time){
     var osc = ctx.createOscillator();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(95, time);
-    osc.frequency.exponentialRampToValueAtTime(55, time+0.09);
+    osc.frequency.setValueAtTime(128, time);
+    osc.frequency.exponentialRampToValueAtTime(68, time+0.1);
     var gain = ctx.createGain();
     gain.gain.setValueAtTime(0.001, time);
-    gain.gain.exponentialRampToValueAtTime(0.38, time+0.008);
-    gain.gain.exponentialRampToValueAtTime(0.001, time+0.14);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(time); osc.stop(time+0.16);
+    gain.gain.exponentialRampToValueAtTime(0.42, time+0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, time+0.15);
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(time); osc.stop(time+0.17);
+
+    var harm = ctx.createOscillator();
+    harm.type = 'triangle';
+    harm.frequency.setValueAtTime(256, time);
+    harm.frequency.exponentialRampToValueAtTime(136, time+0.1);
+    var harmGain = ctx.createGain();
+    harmGain.gain.setValueAtTime(0.001, time);
+    harmGain.gain.exponentialRampToValueAtTime(0.15, time+0.008);
+    harmGain.gain.exponentialRampToValueAtTime(0.001, time+0.13);
+    harm.connect(harmGain); harmGain.connect(masterGain);
+    harm.start(time); harm.stop(time+0.15);
+
+    var clickSrc = ctx.createBufferSource();
+    clickSrc.buffer = getNoiseBuffer(ctx);
+    var clickFilter = ctx.createBiquadFilter();
+    clickFilter.type = 'lowpass';
+    clickFilter.frequency.value = 1100;
+    var clickGain = ctx.createGain();
+    clickGain.gain.setValueAtTime(0.2, time);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, time+0.045);
+    clickSrc.connect(clickFilter); clickFilter.connect(clickGain); clickGain.connect(masterGain);
+    clickSrc.start(time); clickSrc.stop(time+0.05);
   }
 
   // ---------- Music generation ----------
@@ -1319,12 +1489,12 @@
       if(isContinuation) return;
       var onAt = Math.max(0, delayBase + c.start*secPerUnit*1000);
       var holdMs = Math.min(160, c.u*secPerUnit*1000*0.6);
-      setTimeout(function(){ dot.classList.add('on'); }, onAt);
-      setTimeout(function(){ dot.classList.remove('on'); }, onAt + holdMs);
+      guardedTimeout(function(){ dot.classList.add('on'); }, onAt);
+      guardedTimeout(function(){ dot.classList.remove('on'); }, onAt + holdMs);
     });
 
     if(fill){
-      setTimeout(function(){
+      guardedTimeout(function(){
         fill.style.transition = 'none';
         fill.style.width = '0%';
         void fill.offsetWidth;
@@ -1723,11 +1893,11 @@
     events.forEach(function(e){
       var onAt = Math.max(0, delayBase + e.t*1000);
       var holdMs = Math.min(160, e.dur*1000*0.6);
-      setTimeout(function(){ dot.classList.add('on'); }, onAt);
-      setTimeout(function(){ dot.classList.remove('on'); }, onAt + holdMs);
+      guardedTimeout(function(){ dot.classList.add('on'); }, onAt);
+      guardedTimeout(function(){ dot.classList.remove('on'); }, onAt + holdMs);
     });
     if(fill){
-      setTimeout(function(){
+      guardedTimeout(function(){
         fill.style.transition = 'none';
         fill.style.width = '0%';
         void fill.offsetWidth;
@@ -1833,6 +2003,8 @@
   // ---------- Tab wiring ----------
   document.querySelectorAll('.tab-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
+      if(btn.classList.contains('active')) return; // already on this tab — nothing to stop
+      stopPlaybackAndIndicators();
       document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
       document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
       btn.classList.add('active');
@@ -1885,6 +2057,7 @@
     // by each individual Chain Build length button.
     function playPassageTwice(sub, label){
       var ctx = ensureAudio();
+      stopAllAudio();
       resetIndicator(pulseEl);
       var t0 = ctx.currentTime + 0.2;
       var dur1 = schedulePassage(ctx, sub, state.tempo, kind, t0);
@@ -1892,12 +2065,12 @@
       var gap = (60/state.tempo) * 1.4;
       var t1 = t0 + dur1 + gap;
       var dur2 = schedulePassage(ctx, sub, state.tempo, kind, t1);
-      setTimeout(function(){ animateListening(pulseEl, sub, state.tempo, t1, ctx); }, Math.max(0,(t1-ctx.currentTime)*1000) - 5);
+      guardedTimeout(function(){ animateListening(pulseEl, sub, state.tempo, t1, ctx); }, Math.max(0,(t1-ctx.currentTime)*1000) - 5);
       statusEl.textContent = label + ' — playing twice. Listen, then try it back before moving on.';
       revealBtn.disabled = false;
       logReps(1);
       var totalMs = (t1 - ctx.currentTime + dur2) * 1000;
-      setTimeout(function(){ statusEl.textContent = label + ' done — take your time, then continue when ready.'; }, totalMs);
+      guardedTimeout(function(){ statusEl.textContent = label + ' done — take your time, then continue when ready.'; }, totalMs);
     }
 
     function buildChainRow(){
@@ -2047,6 +2220,7 @@
   var gradeRefreshCallbacks = [];
 
   function applyGrade(g){
+    stopPlaybackAndIndicators();
     currentGrade = g;
     var spec = GRADE_SPEC[g];
     document.querySelectorAll('#grade-row .grade-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.val === g); });
@@ -2118,6 +2292,7 @@
     function play(){
       if(!state.test) newTest();
       var ctx = ensureAudio();
+      stopAllAudio();
       resetIndicator(pulseEl);
       var secPerBeat = 60/state.test.bpm;
       var visibleBeats = state.test.beats * state.test.visibleBars;
@@ -2128,12 +2303,13 @@
       statusEl.textContent = 'Playing — clap on every beat. It goes silent after ' + visibleBeats + ' beats; keep clapping in tempo on your own.';
       revealBtn.disabled = false;
       logReps(1);
-      setTimeout(function(){ statusEl.textContent = 'Silent now — keep clapping steadily, then press Reveal to check.'; }, Math.max(0,(t0 - ctx.currentTime + dur)*1000));
+      guardedTimeout(function(){ statusEl.textContent = 'Silent now — keep clapping steadily, then press Reveal to check.'; }, Math.max(0,(t0 - ctx.currentTime + dur)*1000));
     }
 
     function reveal(){
       if(!state.test) return;
       var ctx = ensureAudio();
+      stopAllAudio();
       resetIndicator(pulseEl);
       var secPerBeat = 60/state.test.bpm;
       var totalBeats = state.test.beats * (state.test.visibleBars + state.test.hiddenBars);
@@ -2295,6 +2471,7 @@
       if(!state.question) newQuestion();
       var q = state.question;
       var ctx = ensureAudio();
+      stopAllAudio();
       resetIndicator(pulseEl);
       var secPerBeat = 60/state.tempo;
       var events = [];
@@ -2434,6 +2611,7 @@
     function play(){
       if(!state.triad) newTriad();
       var ctx = ensureAudio();
+      stopAllAudio();
       resetIndicator(pulseEl);
       var freqs = state.triad.pitches.map(freqFromSemitones);
       var events = [{ t:0, dur: 1.6, freqs: freqs, accent:true }];
@@ -2502,6 +2680,7 @@
     function play(){
       if(!state.prog) newProg();
       var ctx = ensureAudio();
+      stopAllAudio();
       resetIndicator(pulseEl);
       var secPerChord = (60/state.tempo) * 1.6;
       var events = [{ t:0, dur: secPerChord*0.8, freqs: chordPitches('I').map(freqFromSemitones), accent:true }];
@@ -2571,6 +2750,7 @@
     function startMemorise(){
       if(!state.passage) return;
       var ctx = ensureAudio();
+      stopAllAudio();
       playTone(ctx, ctx.currentTime+0.1, 1.1, degreeFreq(0), true); // examiner sounds only the keynote
       startBtn.disabled = true;
       revealBtn.disabled = true;
@@ -2609,6 +2789,7 @@
       trackEl.style.display = 'none';
       renderMelodyReveal(revealArea, state.passage);
       var ctx = ensureAudio();
+      stopAllAudio();
       schedulePassage(ctx, state.passage, 66, 'melody', ctx.currentTime+0.2);
       statusEl.textContent = 'Reveal — notation shown and phrase played back.';
     }
